@@ -77,13 +77,6 @@
     "text": "Case studies\n\n\nGlycoproteomics\nImport and inspect an experiment, preprocess quantitative data, perform statistical and functional analyses, and study glycan motifs and derived traits.\n\n\nGlycomics\nPreprocess a glycomics experiment, explore it statistically, and quantify structural motifs and derived traits."
   },
   {
-    "objectID": "index.html#installation",
-    "href": "index.html#installation",
-    "title": "Glycoverse Tutorials",
-    "section": "Installation",
-    "text": "Installation\nInstall the development version of the Glycoverse meta-package and the additional packages used by the tutorials:\ninstall.packages(\"pak\")\npak::pkg_install(c(\n  \"glycoverse/glycoverse\",\n  \"tidyverse\",\n  \"glyfun\",\n  \"Bioconductor/org.Hs.eg.db\"\n))"
-  },
-  {
     "objectID": "tutorials/glycoproteomics.html",
     "href": "tutorials/glycoproteomics.html",
     "title": "Case Study: Glycoproteomics",
