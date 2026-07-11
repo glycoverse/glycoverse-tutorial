@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Glycoverse Tutorials"
+  site-url: https://glycoverse.github.io/glycoverse-tutorial/
+  repo-url: https://github.com/glycoverse/glycoverse-tutorial
+  repo-actions: [edit, issue]
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: tutorials/glycoproteomics.Rmd
+        text: Glycoproteomics
+      - href: tutorials/glycomics.Rmd
+        text: Glycomics
+    right:
+      - icon: github
+        href: https://github.com/glycoverse/glycoverse-tutorial
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+
+execute:
+  freeze: auto
