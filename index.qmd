@@ -24,18 +24,3 @@ structural motifs and derived traits.
 :::
 
 :::
-
-## Installation
-
-Install the development version of the Glycoverse meta-package and the
-additional packages used by the tutorials:
-
-```r
-install.packages("pak")
-pak::pkg_install(c(
-  "glycoverse/glycoverse",
-  "tidyverse",
-  "glyfun",
-  "Bioconductor/org.Hs.eg.db"
-))
-```
