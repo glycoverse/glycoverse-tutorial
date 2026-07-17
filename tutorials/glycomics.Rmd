@@ -38,6 +38,7 @@ In case you're in a hurry...
 # Load the packages
 library(tidyverse)
 library(glycoverse)
+library(SummarizedExperiment)
 
 # Preprocess the data
 clean_exp <- auto_clean(real_experiment2)
@@ -81,6 +82,13 @@ a collection of specialized packages all at once.
 library(glycoverse)
 ```
 
+The Glycoverse data containers extend `SummarizedExperiment`, so we load it to
+use its standard accessors.
+
+```{r}
+library(SummarizedExperiment)
+```
+
 ## Reading the Data
 
 Data import is typically your first step in any analysis.
@@ -92,40 +100,38 @@ healthy controls (H), hepatitis (M), cirrhosis (Y), and hepatocellular carcinoma
 real_experiment2
 ```
 
-For your own glycomics projects, you can create an `experiment()` object manually.
-See [this document](https://glycoverse.github.io/glyexp/articles/glyexp.html#building-your-own-data-empire) for more details.
+For your own glycomics projects, create a `GlycomicSE` object.
+See [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html) for details.
 
-The `real_experiment2` object is an `experiment()` object.
-If you've worked with `SummarizedExperiment` from Bioconductor,
-think of `experiment()` as its tidy cousin.
-Essentially, it's a smart data container that manages three key components:
+The `real_experiment2` object is a `GlycomicSE` object, a specialized
+`SummarizedExperiment` for glycomics data. It manages three key components:
 
-- **Expression matrix**: quantitative data with samples as columns and variables as rows
-- **Sample information**: a tibble with sample metadata (group, batch, demographics, etc.)
-- **Variable information**: a tibble with feature metadata (glycan compositions, glycan structures, etc.)
+- **Abundance assay**: quantitative data with samples as columns and variables as rows
+- **Column data**: sample metadata (group, batch, demographics, etc.)
+- **Row data**: feature metadata (glycan compositions, glycan structures, etc.)
 
-You can get these data components by using `get_expr_mat()`, `get_sample_info()`, and `get_var_info()`.
+You can access these components with `assay()`, `colData()`, and `rowData()`.
 
 ```{r}
-get_expr_mat(real_experiment2)[1:5, 1:5]
+assay(real_experiment2)[1:5, 1:5]
 ```
 
 ```{r}
-get_sample_info(real_experiment2)
+as_tibble(colData(real_experiment2))
 ```
 
 ```{r}
-get_var_info(real_experiment2)
+as_tibble(rowData(real_experiment2))
 ```
 
-For a deeper dive into `experiment()` objects, check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
+For a deeper dive into Glycoverse data containers, check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
 
 ## Data Preprocessing
 
 Raw quantification data needs preprocessing before analysis—that's just a fact of life in omics.
 Typical steps include normalization, missing value imputation, and batch effect correction.
 Rather than making you implement these tedious steps manually, `glyclean` provides a comprehensive preprocessing pipeline.
-Just call `auto_clean()` on your `experiment()` object and you're good to go.
+Just call `auto_clean()` on your `GlycomicSE` object and you're good to go.
 
 ```{r}
 clean_exp <- auto_clean(real_experiment2)
@@ -172,7 +178,7 @@ or extract the underlying data when reviewers ask for it.
 
 `glystats` covers virtually all standard omics analyses.
 All functions follow the same naming pattern: `gly_xxx()`—think `gly_anova()`, `gly_ttest()`, `gly_roc()`, `gly_cox()`, `gly_wgcna()`, and so on.
-They all take an `experiment()` object as their first argument.
+They take a `GlycomicSE`, `GlycoproteomicSE`, or compatible `SummarizedExperiment` as their first argument.
 
 The return format is consistent across all functions—a list with two components:
 
@@ -190,7 +196,7 @@ get_tidy_result(pca_res, "samples")  # many tibbles, so we specify one of them
 ```
 
 Notice the "group" column? That's `glystats` being helpful—
-it automatically pulls relevant metadata from your `experiment()` object
+it automatically pulls relevant metadata from your `GlycomicSE` object
 and includes it in the results wherever it makes sense.
 
 Back to that `autoplot()` magic we saw earlier.
@@ -227,7 +233,8 @@ Before diving into motifs, let's get acquainted with `glyrepr::glycan_structure(
 
 ```{r}
 clean_exp |>
-  get_var_info() |>
+  rowData() |>
+  as_tibble() |>
   pull(glycan_structure)
 ```
 
@@ -287,9 +294,9 @@ motif_anova_res <- clean_exp |>
 get_tidy_result(motif_anova_res, "main_test")
 ```
 
-`quantify_motifs()` transforms your data into a new `experiment()` object.
+`quantify_motifs()` transforms your data into a new `SummarizedExperiment`.
 Instead of quantification of glycans, you now have motif abundances across samples.
-Since it's still an `experiment()` object, all `glystats` functions work seamlessly—including `gly_anova()`.
+All `glystats` functions work seamlessly with this container—including `gly_anova()`.
 
 Now we can answer our question using standard `tidyverse` operations,
 since `motif_anova_res$tidy_result$main_test` is just a regular tibble:
@@ -322,13 +329,13 @@ trait_exp
 ```
 
 That's it!
-Just like `quantify_motifs()`, `derive_traits()` creates a new `experiment()` object,
+Just like `quantify_motifs()`, `derive_traits()` creates a new `SummarizedExperiment`,
 but now with trait values per sample.
 
 The variable information shows what we're working with:
 
 ```{r}
-get_var_info(trait_exp)
+as_tibble(rowData(trait_exp))
 ```
 
 The "trait" column lists all the derived traits we can analyze.
