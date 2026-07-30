@@ -1,3 +1,19 @@
 ---
 title: "Blog"
 ---
+
+# [glyenzy 0.8.0](https://github.com/glycoverse/glyenzy/releases/tag/v0.8.0)
+
+You can now plot biosynthesis networks by simply calling `plot` or `ggplot2::autoplot()` now.
+
+```{r}
+library(glyenzy)
+
+glycans <- c(
+  "Neu5Ac(a2-3)Gal(b1-3)GalNAc(a1-",
+  "Neu5Ac(a2-3)Gal(b1-3)[Neu5Ac(a2-6)]GalNAc(a1-",
+  "Gal(b1-3)[Gal(b1-4)GlcNAc(b1-6)]GalNAc(a1-"
+)
+path <- trace_biosynthesis(glycans)
+plot(path)
+```

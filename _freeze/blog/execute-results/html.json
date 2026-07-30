@@ -1,0 +1,17 @@
+{
+  "hash": "0d19cc8bb9bbb619924cc20512a0528c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Blog\"\n---\n\n# [glyenzy 0.8.0](https://github.com/glycoverse/glyenzy/releases/tag/v0.8.0)\n\nYou can now plot biosynthesis networks by simply calling `plot` or `ggplot2::autoplot()` now.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(glyenzy)\n\nglycans <- c(\n  \"Neu5Ac(a2-3)Gal(b1-3)GalNAc(a1-\",\n  \"Neu5Ac(a2-3)Gal(b1-3)[Neu5Ac(a2-6)]GalNAc(a1-\",\n  \"Gal(b1-3)[Gal(b1-4)GlcNAc(b1-6)]GalNAc(a1-\"\n)\npath <- trace_biosynthesis(glycans)\nplot(path)\n```\n\n::: {.cell-output-display}\n![](blog_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "blog_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
