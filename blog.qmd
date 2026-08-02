@@ -2,6 +2,37 @@
 title: "Blog"
 ---
 
+# [glydraw 0.8.0](https://github.com/glycoverse/glydraw/releases/tag/v0.8.0)
+
+You can now give glycan cartoons a hand-drawn look with
+`draw_cartoon_sketch()`. Set a seed when you want the sketch strokes to be
+reproducible.
+
+```{r fig.width = 3, fig.height = 2}
+library(glydraw)
+
+glycan <- "Gal(b1-3)GalNAc(a1-"
+draw_cartoon_sketch(glycan, seed = 1)
+```
+
+Cartoon appearance is configured through reusable style objects. Tune options
+such as `node_size`, `edge_linewidth`, `font_family`, `colors`, and `red_end`
+with `style_glydraw()`, or use the `style_glygen()`, `style_snfg()`, and
+`style_glycoworkbench()` presets. The same styles work with `draw_cartoon()`,
+`draw_cartoon_sketch()`, `geom_glycan()`, glycan scales and guides, heatmap
+annotations, and `export_cartoons()`.
+
+```{r fig.width = 3, fig.height = 2}
+style <- style_glydraw(
+  node_size = 1.2,
+  edge_linewidth = 1,
+  font_family = "serif",
+  red_end = "~"
+)
+
+draw_cartoon(glycan, style = style)
+```
+
 # [glyenzy 0.8.0](https://github.com/glycoverse/glyenzy/releases/tag/v0.8.0)
 
 You can now plot biosynthesis networks by simply calling `plot` or `ggplot2::autoplot()` now.
@@ -16,36 +47,4 @@ glycans <- c(
 )
 path <- trace_biosynthesis(glycans)
 plot(path)
-```
-
-# [glydraw 0.8.0](https://github.com/glycoverse/glydraw/releases/tag/v0.8.0)
-
-You can now give glycan cartoons a hand-drawn look with
-`draw_cartoon_sketch()`. Set a seed when you want the sketch strokes to be
-reproducible.
-
-```{r}
-library(glydraw)
-
-glycan <- "Gal(b1-3)GalNAc(a1-"
-draw_cartoon_sketch(glycan, seed = 1)
-```
-
-Cartoon appearance is configured through reusable style objects. Tune options
-such as `node_size`, `edge_linewidth`, `font_family`, `colors`, and `red_end`
-with `style_glydraw()`, or use the `style_glygen()`, `style_snfg()`, and
-`style_glycoworkbench()` presets. The same styles work with `draw_cartoon()`,
-`draw_cartoon_sketch()`, `geom_glycan()`, glycan scales and guides, heatmap
-annotations, and `export_cartoons()`.
-
-```{r}
-style <- style_glydraw(
-  node_size = 1.2,
-  edge_linewidth = 1,
-  font_family = "serif",
-  red_end = "~"
-)
-
-draw_cartoon(glycan, style = style)
-draw_cartoon_sketch(glycan, style = style, seed = 1)
 ```
