@@ -97,6 +97,9 @@ library(SummarizedExperiment)
 
 ## Reading the Data
 
+These serum measurements come from the liver disease study by
+[Fu et al., *Nature Communications* 17, 1885 (2026)](https://doi.org/10.1038/s41467-026-68579-x).
+
 The [pGlycoQuant result table](data/Quant.spectra.list) contains pGlyco3
 identifications and quantitative measurements for 12 serum samples from
 study PXD063749. Save it as `data/Quant.spectra.list` in your R working
