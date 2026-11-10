@@ -32,7 +32,7 @@ Quick readiness check:
 
 ## TL;DR
 
-In case you're in a hurry...
+Run this code from the repository's `tutorials` directory.
 
 ```R
 # Load the packages
@@ -40,8 +40,14 @@ library(tidyverse)
 library(glycoverse)
 library(SummarizedExperiment)
 
+```
+
+```{r, ref.label = c('import'), eval = FALSE}
+```
+
+```R
 # Preprocess the data
-clean_exp <- auto_clean(real_experiment)
+clean_exp <- auto_clean(raw_exp)
 
 # Perform PCA
 pca_res <- gly_pca(clean_exp)
@@ -91,23 +97,31 @@ library(SummarizedExperiment)
 
 ## Reading the Data
 
-Data import is typically your first step in any analysis.
-For this tutorial, we'll use the `real_experiment` dataset that comes with `glyexp`.
-This is a real-world N-glycoproteomics dataset from 12 patients across four liver conditions:
-healthy controls (H), hepatitis (M), cirrhosis (Y), and hepatocellular carcinoma (C),
-with 3 samples per condition.
+The [pGlycoQuant result table](data/Quant.spectra.list) contains pGlyco3
+identifications and quantitative measurements for 12 serum samples from
+study PXD063749. Save it as `data/Quant.spectra.list` in your R working
+directory, or run the examples from the repository's `tutorials` directory.
 
-```{r}
-real_experiment
+Set `parse_structure = TRUE` to retain the topology assignments used in the
+motif analysis. Each run name ends in a sample code such as `Y_1`. Its first
+letter identifies the group (H, healthy controls; M, hepatitis; Y, cirrhosis;
+C, hepatocellular carcinoma). pGlyco marks glycosylated asparagine with
+`J`; convert it to `N` before standardizing the feature identifiers.
+
+```{r import}
+raw_exp <- glyread::read_pglyco3_pglycoquant(
+  "data/Quant.spectra.list",
+  parse_structure = TRUE
+) |>
+  mutate_col(
+    .sample = str_remove(str_split_i(.sample, "-", -1), "_"),
+    group = factor(str_sub(.sample, 1, 1), levels = c("H", "M", "Y", "C"))
+  ) |>
+  mutate_row(peptide = str_replace_all(peptide, "J", "N")) |>
+  standardize_variable()
 ```
 
-For your own projects, the `glyread` package can import data
-from virtually any mainstream glycoproteomics software—pGlyco3, MSFragger-Glyco, Byonic, you name it.
-Each software has its own dedicated import function.
-For instance, data from pGlyco3 with pGlycoQuant quantification can be loaded using `read_pglyco3_pglycoquant()`.
-Check out [Get Started with glyread](https://glycoverse.github.io/glyread/articles/glyread.html) for the full rundown.
-
-The `real_experiment` object is a `GlycoproteomicSE` object. Glycoverse import
+The imported `raw_exp` object is a `GlycoproteomicSE` object. Glycoverse import
 functions return this specialized `SummarizedExperiment` for glycoproteomics
 data. It manages three key components:
 
@@ -118,15 +132,15 @@ data. It manages three key components:
 You can access these components with `assay()`, `colData()`, and `rowData()`.
 
 ```{r}
-assay(real_experiment)[1:5, 1:5]
+assay(raw_exp)[1:5, 1:5]
 ```
 
 ```{r}
-as_tibble(colData(real_experiment))
+as_tibble(colData(raw_exp))
 ```
 
 ```{r}
-as_tibble(rowData(real_experiment))
+as_tibble(rowData(raw_exp))
 ```
 
 For a deeper dive into Glycoverse data containers, check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
@@ -139,7 +153,7 @@ Rather than making you implement these tedious steps manually, `glyclean` provid
 Just call `auto_clean()` on your `GlycoproteomicSE` object and you're good to go.
 
 ```{r}
-clean_exp <- auto_clean(real_experiment)
+clean_exp <- auto_clean(raw_exp)
 ```
 
 Your data is now analysis-ready!

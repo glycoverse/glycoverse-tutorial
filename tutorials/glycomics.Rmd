@@ -32,7 +32,7 @@ Quick readiness check:
 
 ## TL;DR
 
-In case you're in a hurry...
+Run this code from the repository's `tutorials` directory.
 
 ```R
 # Load the packages
@@ -40,8 +40,14 @@ library(tidyverse)
 library(glycoverse)
 library(SummarizedExperiment)
 
+```
+
+```{r, ref.label = c('import', 'annotate'), eval = FALSE}
+```
+
+```R
 # Preprocess the data
-clean_exp <- auto_clean(real_experiment2)
+clean_exp <- auto_clean(raw_exp)
 
 # Perform PCA
 pca_res <- gly_pca(clean_exp)
@@ -91,19 +97,49 @@ library(SummarizedExperiment)
 
 ## Reading the Data
 
-Data import is typically your first step in any analysis.
-For this tutorial, we'll use the `real_experiment2` dataset that comes with `glyexp`.
-This is a real-world N-glycomics dataset from 144 patients across four liver conditions:
-healthy controls (H), hepatitis (M), cirrhosis (Y), and hepatocellular carcinoma (C).
+The GlyHunter export for serum N-glycomics study GPST000313 contains one row per
+glycan composition and one column per MALDI plate position. The sample sheet
+links each position to a sample ID and a liver condition. Download
+[glyhunter.csv](data/glyhunter.csv) and [sample-info.csv](data/sample-info.csv)
+into a folder named `data` in your R working directory, or run the examples
+from the repository's `tutorials` directory.
 
-```{r}
-real_experiment2
+For example, the column `A1-12_0_A1_1` corresponds to position `A1`.
+Use the position as the import key so glyread can align the sample sheet
+with the assay columns, then label the columns with the study sample IDs.
+
+```{r import}
+sample_info <- read_csv("data/sample-info.csv", show_col_types = FALSE) |>
+  transmute(study_id = sample, sample = maldi_pos, group)
+
+raw_exp <- glyread::read_glyhunter(
+  "data/glyhunter.csv",
+  sample_info = sample_info,
+  sample_name_converter = function(x) str_split_i(x, "_", 3)
+) |>
+  filter_col(group != "QC") |>
+  mutate_col(.sample = study_id, group = factor(group, levels = c("H", "M", "Y", "C")))
 ```
 
-For your own glycomics projects, create a `GlycomicSE` object.
-See [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html) for details.
+After removing the six quality-control runs, 144 samples remain. The groups
+are healthy controls (H), hepatitis (M), cirrhosis (Y), and hepatocellular
+carcinoma (C). For the motif and trait analyses below, assign each composition
+the best matching human N-glycan topology in GlyDB and retain matched
+compositions. These structures are database-based assignments.
 
-The `real_experiment2` object is a `GlycomicSE` object, a specialized
+```{r annotate}
+raw_exp <- raw_exp |>
+  mutate_row(
+    glycan_structure = glyanno::comp_to_struc(
+      glycan_composition, species = "Homo sapiens", glycan_type = "N",
+      structure_level = "topological", return_best = TRUE
+    )
+  ) |>
+  filter_row(!is.na(glycan_structure)) |>
+  standardize_variable()
+```
+
+The imported `raw_exp` object is a `GlycomicSE` object, a specialized
 `SummarizedExperiment` for glycomics data. It manages three key components:
 
 - **Abundance assay**: quantitative data with samples as columns and variables as rows
@@ -113,15 +149,15 @@ The `real_experiment2` object is a `GlycomicSE` object, a specialized
 You can access these components with `assay()`, `colData()`, and `rowData()`.
 
 ```{r}
-assay(real_experiment2)[1:5, 1:5]
+assay(raw_exp)[1:5, 1:5]
 ```
 
 ```{r}
-as_tibble(colData(real_experiment2))
+as_tibble(colData(raw_exp))
 ```
 
 ```{r}
-as_tibble(rowData(real_experiment2))
+as_tibble(rowData(raw_exp))
 ```
 
 For a deeper dive into Glycoverse data containers, check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
@@ -134,7 +170,7 @@ Rather than making you implement these tedious steps manually, `glyclean` provid
 Just call `auto_clean()` on your `GlycomicSE` object and you're good to go.
 
 ```{r}
-clean_exp <- auto_clean(real_experiment2)
+clean_exp <- auto_clean(raw_exp)
 ```
 
 Your data is now analysis-ready!
