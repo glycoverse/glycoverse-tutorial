@@ -22,17 +22,9 @@ If you're new to `tidyverse` data analysis,
 we highly recommend checking out Hadley Wickham's excellent [R for Data Science](https://r4ds.hadley.nz).
 Trust us, it's worth the investment!
 
-Quick readiness check:
-
-- What's a `tibble`?
-- How do you filter rows in a `tibble`?
-- What's the modern alternative to `for` loops?
-- What's the `|>` operator?
-- What makes data "tidy"?
-
 ## TL;DR
 
-Run this code from the repository's `tutorials` directory.
+If you're in a hurry...
 
 ```R
 # Load the packages
@@ -40,12 +32,16 @@ library(tidyverse)
 library(glycoverse)
 library(SummarizedExperiment)
 
-```
+# Read the data
+raw_exp <- read_pglyco3_pglycoquant(
+  "data/Quant.spectra.list",
+  parse_structure = TRUE
+) |>
+  mutate_col(
+    .sample = str_remove(str_split_i(.sample, "-", -1), "_"),
+    group = factor(str_sub(.sample, 1, 1), levels = c("H", "M", "Y", "C"))
+  )
 
-```{r, ref.label = c('import'), eval = FALSE}
-```
-
-```R
 # Preprocess the data
 clean_exp <- auto_clean(raw_exp)
 
@@ -88,40 +84,26 @@ a collection of specialized packages all at once.
 library(glycoverse)
 ```
 
-The Glycoverse data containers extend `SummarizedExperiment`, so we load it to
-use its standard accessors.
-
-```{r}
-library(SummarizedExperiment)
-```
-
 ## Reading the Data
 
-These serum measurements come from the liver disease study by
+We'll use the glycoproteomics data from the liver disease study by
 [Fu et al., *Nature Communications* 17, 1885 (2026)](https://doi.org/10.1038/s41467-026-68579-x).
-
-The [pGlycoQuant result table](data/Quant.spectra.list) contains pGlyco3
-identifications and quantitative measurements for 12 serum samples from
-study PXD063749. Save it as `data/Quant.spectra.list` in your R working
-directory, or run the examples from the repository's `tutorials` directory.
-
-Set `parse_structure = TRUE` to retain the topology assignments used in the
-motif analysis. Each run name ends in a sample code such as `Y_1`. Its first
-letter identifies the group (H, healthy controls; M, hepatitis; Y, cirrhosis;
-C, hepatocellular carcinoma). pGlyco marks glycosylated asparagine with
-`J`; convert it to `N` before standardizing the feature identifiers.
+Glycopeptides were identifed by [pGlyco3](https://github.com/pFindStudio/pGlyco3)
+and quantified by [pGlycoQuant](https://github.com/Power-Quant/pGlycoQuant).
+You can download the file to your own computer by clicking [this](https://github.com/glycoverse/glycoverse-tutorial/raw/refs/heads/main/tutorials/data/Quant.spectra.list?download=1).
+Put the file in any location you like in your computer.
+Let's say it's `data/Quant.spectra.list`.
 
 ```{r import}
-raw_exp <- glyread::read_pglyco3_pglycoquant(
+raw_exp <- read_pglyco3_pglycoquant(
   "data/Quant.spectra.list",
-  parse_structure = TRUE
+  parse_structure = TRUE  # default to FALSE, ignoring glycan structures
 ) |>
+  # The code chunk below will be explained later.
   mutate_col(
     .sample = str_remove(str_split_i(.sample, "-", -1), "_"),
     group = factor(str_sub(.sample, 1, 1), levels = c("H", "M", "Y", "C"))
-  ) |>
-  mutate_row(peptide = str_replace_all(peptide, "J", "N")) |>
-  standardize_variable()
+  )
 ```
 
 The imported `raw_exp` object is a `GlycoproteomicSE` object. Glycoverse import
@@ -146,7 +128,19 @@ as_tibble(colData(raw_exp))
 as_tibble(rowData(raw_exp))
 ```
 
-For a deeper dive into Glycoverse data containers, check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
+Now let's come back to the `mutate_col()` call.
+`mutate_col()` can be regarded as "calling `dplyr::mutate()` on the `colData` of the SE object".
+Therefore, we're editing the columns in the `colData`.
+Specifically, we edited the `.sample` column, and added another column called `group`.
+
+In fact, the `.sample` column is a special "virtual index" column.
+It is the proxy of the folling things:
+1. the colnames of the `SE` object,
+2. the colnames of the `assay`,
+3. the rownames of the `colData`.
+
+For a deeper dive into Glycoverse data containers, dplyr-style manipulation, and the virtual index columns, 
+check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
 
 ## Data Preprocessing
 
@@ -173,8 +167,6 @@ and `glyvis` to make sense of the results visually.
 Let's kick off with PCA to get a bird's-eye view of our data structure.
 
 ```{r}
-#| fig-width: 4
-#| fig-height: 4
 plot_pca(clean_exp)  # from `glyvis`
 ```
 
@@ -186,8 +178,6 @@ and renders the results.
 You can also break this down into separate steps:
 
 ```{r}
-#| fig-width: 4
-#| fig-height: 4
 pca_res <- gly_pca(clean_exp)  # from `glystats`
 autoplot(pca_res)  # from `glyvis`
 # you can also use `plot_pca(pca_res)`
@@ -340,7 +330,7 @@ motif_anova_res |>
   get_tidy_result("main_test") |>
   filter(p_adj < 0.05) |>
   group_by(trait) |>
-  dplyr::count()
+  count()
 ```
 
 Want the specific glycosites with significant Lewis a/x epitopes? Easy:
