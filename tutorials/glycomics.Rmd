@@ -22,17 +22,9 @@ If you're new to `tidyverse` data analysis,
 we highly recommend checking out Hadley Wickham's excellent [R for Data Science](https://r4ds.hadley.nz).
 Trust us, it's worth the investment!
 
-Quick readiness check:
-
-- What's a `tibble`?
-- How do you filter rows in a `tibble`?
-- What's the modern alternative to `for` loops?
-- What's the `|>` operator?
-- What makes data "tidy"?
-
 ## TL;DR
 
-Run this code from the repository's `tutorials` directory.
+If you're in a hurry...
 
 ```R
 # Load the packages
@@ -40,12 +32,26 @@ library(tidyverse)
 library(glycoverse)
 library(SummarizedExperiment)
 
-```
+# Read the data and assign candidate structures
+sample_info <- read_csv("data/sample-info.csv", show_col_types = FALSE) |>
+  transmute(study_id = sample, sample = maldi_pos, group)
 
-```{r, ref.label = c('import', 'annotate'), eval = FALSE}
-```
+raw_exp <- read_glyhunter(
+  "data/glyhunter.csv",
+  sample_info = sample_info,
+  sample_name_converter = function(x) str_split_i(x, "_", 3)
+) |>
+  filter_col(group != "QC") |>
+  mutate_col(.sample = study_id, group = factor(group, levels = c("H", "M", "Y", "C"))) |>
+  mutate_row(
+    glycan_structure = glyanno::comp_to_struc(
+      glycan_composition, species = "Homo sapiens", glycan_type = "N",
+      structure_level = "topological", return_best = TRUE
+    )
+  ) |>
+  filter_row(!is.na(glycan_structure)) |>
+  standardize_variable()
 
-```R
 # Preprocess the data
 clean_exp <- auto_clean(raw_exp)
 
@@ -54,7 +60,7 @@ pca_res <- gly_pca(clean_exp)
 autoplot(pca_res)
 
 # Perform differential expression analysis
-anova_res <- gly_anova(clean_exp)
+anova_res <- gly_anova(clean_exp, contrasts = "H_vs_C")
 get_tidy_result(anova_res, "main_test")
 
 # Perform motif analysis
@@ -63,7 +69,7 @@ motifs <- c(
   motif2 = "Gal(??-?)GlcNAc(??-",
   motif3 = "GlcNAc(??-"
 )
-motif_exp <- quantify_motifs(clean_exp, motifs)
+motif_exp <- quantify_motifs(clean_exp, motifs, alignments = "terminal")
 motif_anova_res <- gly_anova(motif_exp)
 get_tidy_result(motif_anova_res, "main_test")
 
@@ -88,25 +94,18 @@ a collection of specialized packages all at once.
 library(glycoverse)
 ```
 
-The Glycoverse data containers extend `SummarizedExperiment`, so we load it to
-use its standard accessors.
-
-```{r}
-library(SummarizedExperiment)
-```
-
 ## Reading the Data
 
-These serum measurements come from the liver disease study by
+We'll use the serum N-glycomics data from the liver disease study by
 [Fu et al., *Nature Communications* 17, 1885 (2026)](https://doi.org/10.1038/s41467-026-68579-x).
-
-The paper reports the serum N-glycomics raw data under GlycoPOST accession
-GPST000584. The GlyHunter export used here contains one row per
+The raw data are available under GlycoPOST accession GPST000584.
+The GlyHunter export used here contains one row per
 glycan composition and one column per MALDI plate position. The sample sheet
-links each position to a sample ID and a liver condition. Download
-[glyhunter.csv](data/glyhunter.csv) and [sample-info.csv](data/sample-info.csv)
-into a folder named `data` in your R working directory, or run the examples
-from the repository's `tutorials` directory.
+links each position to a sample ID and a liver condition.
+Download [glyhunter.csv](https://github.com/glycoverse/glycoverse-tutorial/raw/refs/heads/main/tutorials/data/glyhunter.csv?download=1)
+and [sample-info.csv](https://github.com/glycoverse/glycoverse-tutorial/raw/refs/heads/main/tutorials/data/sample-info.csv?download=1)
+to your computer. You can put them wherever you like; in this example, they
+are in a `data` folder relative to your R working directory.
 
 For example, the column `A1-12_0_A1_1` corresponds to position `A1`.
 Use the position as the import key so glyread can align the sample sheet
@@ -116,7 +115,7 @@ with the assay columns, then label the columns with the study sample IDs.
 sample_info <- read_csv("data/sample-info.csv", show_col_types = FALSE) |>
   transmute(study_id = sample, sample = maldi_pos, group)
 
-raw_exp <- glyread::read_glyhunter(
+raw_exp <- read_glyhunter(
   "data/glyhunter.csv",
   sample_info = sample_info,
   sample_name_converter = function(x) str_split_i(x, "_", 3)
@@ -164,7 +163,17 @@ as_tibble(colData(raw_exp))
 as_tibble(rowData(raw_exp))
 ```
 
-For a deeper dive into Glycoverse data containers, check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
+Now let's come back to the sample metadata operations.
+`filter_col()` filters samples using columns in `colData`, so it removes the
+quality-control runs. `mutate_col()` works like `dplyr::mutate()` on `colData`:
+here it sets the sample names to the study IDs and turns `group` into a factor.
+
+The `.sample` column is a special virtual index: it represents the column names
+of the experiment and its assays, as well as the row names of `colData`.
+Changing it keeps these names synchronized.
+
+For a deeper dive into Glycoverse data containers, dplyr-style manipulation, and
+virtual index columns, check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
 
 ## Data Preprocessing
 
@@ -191,8 +200,6 @@ and `glyvis` to make sense of the results visually.
 Let's kick off with PCA to get a bird's-eye view of our data structure.
 
 ```{r}
-#| fig-width: 4
-#| fig-height: 4
 plot_pca(clean_exp)  # from `glyvis`
 ```
 
@@ -204,8 +211,6 @@ and renders the results.
 You can also break this down into separate steps:
 
 ```{r}
-#| fig-width: 4
-#| fig-height: 4
 pca_res <- gly_pca(clean_exp)  # from `glystats`
 autoplot(pca_res)  # from `glyvis`
 # you can also use `plot_pca(pca_res)`
@@ -289,9 +294,10 @@ For glycomics data, this information is hard to come by automatically.
 You can do it manually by parsing the glycan structure strings using `glyparse`
 and using `left_join_var()` to join the parsed structures to the variable information tibble.
 
-Fortunately, our example dataset includes structural information,
-opening up a world of advanced analytical possibilities.
-Let's explore motif analysis.
+For this example, we assigned a candidate topology to each composition above.
+These database-based assignments do not establish which structural isomers are
+present in the samples, so the motif and derived trait results depend on the
+assigned structures. Let's explore motif analysis.
 
 **Quick note:** The printed structures use IUPAC-condensed notation,
 which we'll also use for defining motifs below.
