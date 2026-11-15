@@ -167,6 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#tldr" id="toc-tldr" class="nav-link active" data-scroll-target="#tldr">TL;DR</a></li>
   <li><a href="#loading-the-packages" id="toc-loading-the-packages" class="nav-link" data-scroll-target="#loading-the-packages">Loading the Packages</a></li>
   <li><a href="#reading-the-data" id="toc-reading-the-data" class="nav-link" data-scroll-target="#reading-the-data">Reading the Data</a></li>
+  <li><a href="#glycan-structure-annotation" id="toc-glycan-structure-annotation" class="nav-link" data-scroll-target="#glycan-structure-annotation">Glycan Structure Annotation</a></li>
   <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing">Data Preprocessing</a></li>
   <li><a href="#statistical-analysis-and-visualization" id="toc-statistical-analysis-and-visualization" class="nav-link" data-scroll-target="#statistical-analysis-and-visualization">Statistical Analysis and Visualization</a></li>
   <li><a href="#advanced-motif-analysis" id="toc-advanced-motif-analysis" class="nav-link" data-scroll-target="#advanced-motif-analysis">Advanced Motif Analysis</a></li>
@@ -320,18 +321,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter_col</span>(group <span class="sc">!=</span> <span class="st">"QC"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_col</span>(<span class="at">.sample =</span> study_id, <span class="at">group =</span> <span class="fu">factor</span>(group, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"H"</span>, <span class="st">"M"</span>, <span class="st">"Y"</span>, <span class="st">"C"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>After removing the six quality-control runs, 144 samples remain. The groups are healthy controls (H), hepatitis (M), cirrhosis (Y), and hepatocellular carcinoma (C). For the motif and trait analyses below, assign each composition the best matching human N-glycan topology in GlyDB and retain matched compositions. These structures are database-based assignments.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>raw_exp <span class="ot">&lt;-</span> raw_exp <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_row</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">glycan_structure =</span> glyanno<span class="sc">::</span><span class="fu">comp_to_struc</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      glycan_composition, <span class="at">species =</span> <span class="st">"Homo sapiens"</span>, <span class="at">glycan_type =</span> <span class="st">"N"</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">structure_level =</span> <span class="st">"topological"</span>, <span class="at">return_best =</span> <span class="cn">TRUE</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter_row</span>(<span class="sc">!</span><span class="fu">is.na</span>(glycan_structure)) <span class="sc">|&gt;</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standardize_variable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
+<p>After removing the six quality-control runs, 144 samples remain. The groups are healthy controls (H), hepatitis (M), cirrhosis (Y), and hepatocellular carcinoma (C).</p>
 <p>The imported <code>raw_exp</code> object is a <code>GlycomicSE</code> object, a specialized <code>SummarizedExperiment</code> for glycomics data. It manages three key components:</p>
 <ul>
 <li><strong>Abundance assay</strong>: quantitative data with samples as columns and variables as rows</li>
@@ -340,51 +330,84 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>You can access these components with <code>assay()</code>, <code>colData()</code>, and <code>rowData()</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">assay</span>(raw_exp)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                            S2001    S2002    S2003    S2004    S2005</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Hex(3)HexNAc(3)         1354.352 1472.504 1311.722 1521.296 1373.607</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Hex(3)HexNAc(7)         3315.779 2903.602 3057.763       NA 1706.758</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Hex(5)HexNAc(2)         6940.940 4349.991 4879.541 4372.574 3533.398</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Hex(6)HexNAc(4)NeuAc(2) 4437.816 3142.817 3020.503 3776.238 3182.280</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Hex(4)HexNAc(3)         1346.274 1184.083 1056.709 1448.944 1259.690</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">assay</span>(raw_exp)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           S2001    S2002    S2003    S2004    S2005</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; H3N3   1354.352 1472.504 1311.722 1521.296 1373.607</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; H3N7   3315.779 2903.602 3057.763       NA 1706.758</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; H5N2   6940.940 4349.991 4879.541 4372.574 3533.398</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; H6N4S2 4437.816 3142.817 3020.503 3776.238 3182.280</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; H4N3   1346.274 1184.083 1056.709 1448.944 1259.690</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">colData</span>(raw_exp))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 144 × 2</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    study_id group</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;fct&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 S2001    H    </span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 S2002    H    </span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 S2003    C    </span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 S2004    M    </span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 S2005    C    </span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 S2006    M    </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 S2007    M    </span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 S2008    C    </span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 S2009    Y    </span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 S2010    H    </span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 134 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">colData</span>(raw_exp))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 144 × 2</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    study_id group</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;fct&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 S2001    H    </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 S2002    H    </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 S2003    C    </span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 S2004    M    </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 S2005    C    </span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 S2006    M    </span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 S2007    M    </span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 S2008    C    </span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 S2009    Y    </span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 S2010    H    </span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 134 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">rowData</span>(raw_exp))</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 66 × 2</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    glycan_composition             glycan_structure                              </span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;comp&gt;                         &lt;glydb_st&gt;                                    </span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Hex(3)HexNAc(3)                GlcNAc(??-?)Man(??-?)[Man(??-?)]Man(??-?)GlcN…</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Hex(3)HexNAc(7)                GlcNAc(??-?)[GlcNAc(??-?)]Man(??-?)[GlcNAc(??…</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Hex(5)HexNAc(2)                Man(??-?)[Man(??-?)]Man(??-?)[Man(??-?)]Man(?…</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Hex(6)HexNAc(4)NeuAc(2)        Neu5Ac(??-?)Gal(??-?)GlcNAc(??-?)Man(??-?)[Ne…</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Hex(4)HexNAc(3)                Gal(??-?)GlcNAc(??-?)Man(??-?)[Man(??-?)]Man(…</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Hex(5)HexNAc(4)dHex(2)         Fuc(??-?)Gal(??-?)GlcNAc(??-?)Man(??-?)[Gal(?…</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Hex(3)HexNAc(3)dHex(1)         GlcNAc(??-?)Man(??-?)[Man(??-?)]Man(??-?)GlcN…</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Hex(3)HexNAc(4)                GlcNAc(??-?)Man(??-?)[GlcNAc(??-?)Man(??-?)]M…</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Hex(5)HexNAc(5)NeuAc(1)        Neu5Ac(??-?)Gal(??-?)GlcNAc(??-?)Man(??-?)[Ga…</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Hex(4)HexNAc(5)dHex(1)NeuAc(1) Neu5Ac(??-?)Gal(??-?)GlcNAc(??-?)Man(??-?)[Gl…</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 56 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">rowData</span>(raw_exp))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 67 × 1</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    glycan_composition            </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;comp&gt;                        </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Hex(3)HexNAc(3)               </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Hex(3)HexNAc(7)               </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Hex(5)HexNAc(2)               </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Hex(6)HexNAc(4)NeuAc(2)       </span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Hex(4)HexNAc(3)               </span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Hex(5)HexNAc(4)dHex(2)        </span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Hex(3)HexNAc(3)dHex(1)        </span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Hex(3)HexNAc(4)               </span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Hex(5)HexNAc(5)NeuAc(1)       </span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Hex(4)HexNAc(5)dHex(1)NeuAc(1)</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 57 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now let’s come back to the sample metadata operations. <code>filter_col()</code> filters samples using columns in <code>colData</code>, so it removes the quality-control runs. <code>mutate_col()</code> works like <code>dplyr::mutate()</code> on <code>colData</code>: here it sets the sample names to the study IDs and turns <code>group</code> into a factor.</p>
 <p>The <code>.sample</code> column is a special virtual index: it represents the column names of the experiment and its assays, as well as the row names of <code>colData</code>. Changing it keeps these names synchronized.</p>
 <p>For a deeper dive into Glycoverse data containers, dplyr-style manipulation, and virtual index columns, check out <a href="https://glycoverse.github.io/glyexp/articles/glyexp.html">Get Started with glyexp</a>.</p>
+</section>
+<section id="glycan-structure-annotation" class="level2">
+<h2 class="anchored" data-anchor-id="glycan-structure-annotation">Glycan Structure Annotation</h2>
+<p>This dataset only contains glycan composition information. However, for the advanced glycan structure analysis below, structural information is needed. A workaround is to assign these compositions with the most possible glycan structures. The <code>glyanno</code> package can help.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>raw_exp <span class="ot">&lt;-</span> raw_exp <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Here we add a new `glycan_structure` column,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># using the most possible structure `glyanno` assigned to each composition.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_row</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">glycan_structure =</span> glyanno<span class="sc">::</span><span class="fu">comp_to_struc</span>(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      glycan_composition,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">species =</span> <span class="st">"Homo sapiens"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">glycan_type =</span> <span class="st">"N"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">structure_level =</span> <span class="st">"topological"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">return_best =</span> <span class="cn">TRUE</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Some compositions cannot be assigned to any known structures in the database.</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We regard these as false positive identifications and remove them.</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter_row</span>(<span class="sc">!</span><span class="fu">is.na</span>(glycan_structure)) <span class="sc">|&gt;</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">standardize_variable</span>()</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>raw_exp</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── GlycomicSE ──────────────────────────────────────────────────────────────────</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Abundance assay: 144 samples, 66 variables</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Glycan type: N</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Row data fields: glycan_composition &lt;comp&gt;, glycan_structure &lt;glydb_st&gt;</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Column data fields: study_id &lt;chr&gt;, group &lt;fct&gt;</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Metadata fields: exp_type &lt;chr&gt;, glycan_type &lt;chr&gt;, scale &lt;chr&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>glyanno::comp_to_struc()</code> returns all possible matches by default. Here we set <code>return_best</code> to TRUE to get only the best match. This returns a <code>glyrepr::glycan_structure()</code> vector with the same length as the input <code>glyrepr::glycan_composition()</code> vector, with <code>NA</code> for those unmatched compositions.</p>
+<p><strong>Note:</strong> If you run the code yourself and this is your first time using <code>glyanno</code>, call <code>glyanno::build_glyanno_cache()</code> first to build the cache. This makes the annotation process much faster.</p>
 </section>
 <section id="data-preprocessing" class="level2">
 <h2 class="anchored" data-anchor-id="data-preprocessing">Data Preprocessing</h2>

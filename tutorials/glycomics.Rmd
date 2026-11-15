@@ -126,21 +126,7 @@ raw_exp <- read_glyhunter(
 
 After removing the six quality-control runs, 144 samples remain. The groups
 are healthy controls (H), hepatitis (M), cirrhosis (Y), and hepatocellular
-carcinoma (C). For the motif and trait analyses below, assign each composition
-the best matching human N-glycan topology in GlyDB and retain matched
-compositions. These structures are database-based assignments.
-
-```{r annotate}
-raw_exp <- raw_exp |>
-  mutate_row(
-    glycan_structure = glyanno::comp_to_struc(
-      glycan_composition, species = "Homo sapiens", glycan_type = "N",
-      structure_level = "topological", return_best = TRUE
-    )
-  ) |>
-  filter_row(!is.na(glycan_structure)) |>
-  standardize_variable()
-```
+carcinoma (C).
 
 The imported `raw_exp` object is a `GlycomicSE` object, a specialized
 `SummarizedExperiment` for glycomics data. It manages three key components:
@@ -174,6 +160,43 @@ Changing it keeps these names synchronized.
 
 For a deeper dive into Glycoverse data containers, dplyr-style manipulation, and
 virtual index columns, check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
+
+## Glycan Structure Annotation
+
+This dataset only contains glycan composition information.
+However, for the advanced glycan structure analysis below, structural information is needed.
+A workaround is to assign these compositions with the most possible glycan structures.
+The `glyanno` package can help.
+
+```{r annotate}
+raw_exp <- raw_exp |>
+  # Here we add a new `glycan_structure` column,
+  # using the most possible structure `glyanno` assigned to each composition.
+  mutate_row(
+    glycan_structure = glyanno::comp_to_struc(
+      glycan_composition,
+      species = "Homo sapiens",
+      glycan_type = "N",
+      structure_level = "topological",
+      return_best = TRUE
+    )
+  ) |>
+  # Some compositions cannot be assigned to any known structures in the database.
+  # We regard these as false positive identifications and remove them.
+  filter_row(!is.na(glycan_structure)) |>
+  standardize_variable()
+
+raw_exp
+```
+
+`glyanno::comp_to_struc()` returns all possible matches by default.
+Here we set `return_best` to TRUE to get only the best match.
+This returns a `glyrepr::glycan_structure()` vector with the same length as
+the input `glyrepr::glycan_composition()` vector, with `NA` for those unmatched compositions.
+
+**Note:** If you run the code yourself and this is your first time using `glyanno`,
+call `glyanno::build_glyanno_cache()` first to build the cache.
+This makes the annotation process much faster.
 
 ## Data Preprocessing
 
