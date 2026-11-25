@@ -3,7 +3,7 @@ title: "How to"
 ---
 
 Each recipe solves one task. For a complete workflow and installation
-instructions, see the [case studies](../index.qmd#case-studies).
+instructions, see the [case studies](../case-studies/index.qmd).
 
 ## Subset an experiment
 
