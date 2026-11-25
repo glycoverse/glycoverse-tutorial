@@ -2,8 +2,9 @@
 title: "Glycoverse Tutorials"
 ---
 
-These tutorials demonstrate complete glycomics and glycoproteomics analyses
-using packages from the [Glycoverse](https://github.com/glycoverse) ecosystem.
+Learn to analyze glycomics and glycoproteomics data with packages from the
+[Glycoverse](https://github.com/glycoverse) ecosystem. Follow a complete case
+study or look up a specific task.
 
 ## Case studies
 
@@ -24,3 +25,11 @@ structural motifs and derived traits.
 :::
 
 :::
+
+## How to
+
+Short, task-focused recipes with copyable R code.
+
+- [Subset an experiment](how-to/index.qmd#subset-an-experiment)
+- [Inspect preprocessing history](how-to/index.qmd#inspect-preprocessing-history)
+- [Infer a candidate structure from a glycan composition](how-to/index.qmd#infer-a-candidate-structure-from-a-glycan-composition)

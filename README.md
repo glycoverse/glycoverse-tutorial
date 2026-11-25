@@ -1,10 +1,11 @@
 # Glycoverse Tutorials
 
-End-to-end glycomics and glycoproteomics case studies for the
+End-to-end case studies and short How to recipes for the
 [Glycoverse](https://github.com/glycoverse) ecosystem.
 
 - [Glycoproteomics tutorial](https://glycoverse.github.io/glycoverse-tutorial/tutorials/glycoproteomics.html)
 - [Glycomics tutorial](https://glycoverse.github.io/glycoverse-tutorial/tutorials/glycomics.html)
+- [How to](https://glycoverse.github.io/glycoverse-tutorial/how-to/)
 - [Blog](https://glycoverse.github.io/glycoverse-tutorial/blog.html)
 
 ## Build locally

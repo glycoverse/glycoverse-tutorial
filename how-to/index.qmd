@@ -1,0 +1,134 @@
+---
+title: "How to"
+---
+
+Each recipe solves one task. For a complete workflow and installation
+instructions, see the [case studies](../index.qmd#case-studies).
+
+## Subset an experiment
+
+**Keep selected glycans and sample groups in a glyexp experiment.**
+
+The bundled example uses `H` for healthy controls and `C` for hepatocellular
+carcinoma.
+
+```r
+library(glyexp)
+library(glyrepr)
+
+exp <- real_experiment2
+keep_glycans <- as_glycan_composition(c("H5N2", "H6N2", "H7N2", "H8N2", "H9N2"))
+
+subset_exp <- exp |>
+  filter_row(glycan_composition %in% keep_glycans) |>
+  filter_col(group %in% c("H", "C"), .drop_levels = TRUE)
+
+dim(exp)  # 66 glycans and 144 samples
+dim(subset_exp)  # 5 glycans and 73 samples
+table(SummarizedExperiment::colData(subset_exp)$group, useNA = "ifany")
+```
+
+`filter_row()` and `filter_col()` accept the same kind of conditions as
+`dplyr::filter()`. They evaluate the conditions against feature and sample
+metadata, respectively, and subset the experiment so the assays stay aligned
+with the metadata.
+
+Conceptually, `filter_row()` identifies the rows to keep from `rowData(exp)`
+and then subsets the experiment by those row IDs:
+
+```r
+# Pseudocode: how row metadata and assays stay aligned.
+new_row_data <- dplyr::filter(
+  row_metadata_as_tibble,
+  glycan_composition %in% keep_glycans
+)
+new_exp <- exp[new_row_data$.variable, ]
+```
+
+Here, `.variable` holds the row IDs. `filter_col()` does the same for
+`colData(exp)` and the assay columns. Setting `.drop_levels = TRUE` also
+removes unused levels from the `group` factor.
+
+## Inspect preprocessing history
+
+**See which preprocessing steps `glyclean::auto_clean()` ran.**
+
+```r
+library(glyexp)
+library(glyclean)
+
+exp <- real_experiment2
+clean_exp <- suppressMessages(auto_clean(exp))
+history <- get_pipeline(clean_exp)
+history
+```
+
+Run `auto_clean()` without `suppressMessages()` to see progress in the console.
+Use `get_pipeline()` to retrieve the recorded operations and their settings
+from the cleaned experiment.
+
+To check that the recorded steps reproduce the assay in this example, replay
+them on the original experiment:
+
+```r
+clean_exp2 <- suppressMessages(apply_pipeline(exp, history))
+isTRUE(all.equal(
+  SummarizedExperiment::assay(clean_exp),
+  SummarizedExperiment::assay(clean_exp2)
+))
+```
+
+This comparison returns `TRUE` in the example.
+
+## Infer a candidate structure from a glycan composition
+
+**Find plausible structures for one or more glycan compositions.**
+
+Use [glyanno](https://glycoverse.github.io/glyanno/#installation) to match your
+compositions against known structures in glydb.
+
+```r
+library(glyanno)
+
+comp_to_struc(
+  c("H5N2", "H5N4", "H1N1"),
+  species = "Homo sapiens",
+  glycan_type = "N",
+  structure_level = "topological",
+  return_best = TRUE
+)
+```
+
+The first argument accepts composition strings such as `"H5N2"`,
+`"Hex(5)HexNAc(2)"`, and `"Man(5)GlcNAc(2)"`, or a
+`glyrepr::glycan_composition()` vector.
+
+`species` and `glycan_type` limit the database search. This example uses human
+N-glycans. Run `glydb::glydb_species()` to see available species. The
+[database documentation](https://glycoverse.github.io/glydb/reference/glydb_structures.html)
+lists the supported glycan types; `"O"` includes all O-linked subtypes.
+
+With `structure_level = "topological"`, the results retain residue connectivity
+and branching without specifying linkage positions or anomers. Use
+`"intact"` to search fully specified structures. Although glyrepr also
+recognizes `"partial"` structures, this search accepts only `"intact"` or
+`"topological"`. See `?glyrepr::get_structure_level` for details.
+
+With `return_best = TRUE`, the result is a glycan-structure vector with one
+entry per input: the highest-confidence database match, or `NA` when no match
+is found. In this example, `H1N1` returns `NA`. A database match is a candidate
+to investigate, not an experimental structure assignment.
+
+Omit `return_best` to get all matching candidates and their confidence scores
+as a tibble:
+
+```r
+comp_to_struc(
+  c("H5N2", "H5N4", "H1N1"),
+  species = "Homo sapiens",
+  glycan_type = "N",
+  structure_level = "topological"
+)
+```
+
+See `?glydb::glydb_structures` for the definition of the confidence score.
