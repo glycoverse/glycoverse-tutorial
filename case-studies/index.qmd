@@ -1,0 +1,25 @@
+---
+title: "Case Studies"
+toc: false
+---
+
+Follow a complete analysis from data import through interpretation. For a
+shorter example focused on one task, see [How to](../how-to/index.qmd).
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+### [Glycoproteomics](../tutorials/glycoproteomics.Rmd)
+
+Import and inspect an experiment, preprocess quantitative data, perform
+statistical and functional analyses, and study glycan motifs and derived traits.
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [Glycomics](../tutorials/glycomics.Rmd)
+
+Preprocess a glycomics experiment, explore it statistically, and quantify
+structural motifs and derived traits.
+:::
+
+:::

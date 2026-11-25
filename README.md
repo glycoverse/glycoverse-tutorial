@@ -3,8 +3,7 @@
 End-to-end case studies and short How to recipes for the
 [Glycoverse](https://github.com/glycoverse) ecosystem.
 
-- [Glycoproteomics tutorial](https://glycoverse.github.io/glycoverse-tutorial/tutorials/glycoproteomics.html)
-- [Glycomics tutorial](https://glycoverse.github.io/glycoverse-tutorial/tutorials/glycomics.html)
+- [Case Studies](https://glycoverse.github.io/glycoverse-tutorial/case-studies/)
 - [How to](https://glycoverse.github.io/glycoverse-tutorial/how-to/)
 - [Blog](https://glycoverse.github.io/glycoverse-tutorial/blog.html)
 

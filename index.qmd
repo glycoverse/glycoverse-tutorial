@@ -6,25 +6,9 @@ Learn to analyze glycomics and glycoproteomics data with packages from the
 [Glycoverse](https://github.com/glycoverse) ecosystem. Follow a complete case
 study or look up a specific task.
 
-## Case studies
+## Case Studies
 
-::: {.grid}
-
-::: {.g-col-12 .g-col-md-6}
-### [Glycoproteomics](tutorials/glycoproteomics.Rmd)
-
-Import and inspect an experiment, preprocess quantitative data, perform
-statistical and functional analyses, and study glycan motifs and derived traits.
-:::
-
-::: {.g-col-12 .g-col-md-6}
-### [Glycomics](tutorials/glycomics.Rmd)
-
-Preprocess a glycomics experiment, explore it statistically, and quantify
-structural motifs and derived traits.
-:::
-
-:::
+Follow an end-to-end [glycomics or glycoproteomics case study](case-studies/index.qmd).
 
 ## How to
 

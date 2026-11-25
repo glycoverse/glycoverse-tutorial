@@ -11,10 +11,8 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: tutorials/glycoproteomics.Rmd
-        text: Glycoproteomics
-      - href: tutorials/glycomics.Rmd
-        text: Glycomics
+      - href: case-studies/index.qmd
+        text: Case Studies
       - href: how-to/index.qmd
         text: How to
       - href: blog.qmd
