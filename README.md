@@ -26,6 +26,6 @@ source changes: the GitHub Pages workflow publishes `docs/` when changes reach
 Execution uses `freeze: auto`, so unchanged computational chapters reuse their
 checked-in results in `_freeze/`. To refresh all R results explicitly, run
 `quarto render --execute` with the tutorial dependencies installed. For a
-layout-only build using the saved results, run `quarto render --freeze`.
+layout-only build, `quarto render` reuses saved results for unchanged chapters.
 
 Existing tutorial URLs remain unchanged.

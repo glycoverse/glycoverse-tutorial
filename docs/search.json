@@ -256,7 +256,7 @@
     "section": "",
     "text": "3.1 Subset an experiment\nEach recipe solves one task. For a complete workflow and installation instructions, see the case studies.\nKeep selected glycans and sample groups in a glyexp experiment.\nThe bundled example uses H for healthy controls and C for hepatocellular carcinoma.\nfilter_row() and filter_col() accept the same kind of conditions as dplyr::filter(). They evaluate the conditions against feature and sample metadata, respectively, and subset the experiment so the assays stay aligned with the metadata.\nConceptually, filter_row() identifies the rows to keep from rowData(exp) and then subsets the experiment by those row IDs:\nHere, .variable holds the row IDs. filter_col() does the same for colData(exp) and the assay columns. Setting .drop_levels = TRUE also removes unused levels from the group factor.",
     "crumbs": [
-      "Reference",
+      "How to",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>How to</span>"
     ]
   },
@@ -267,7 +267,7 @@
     "section": "",
     "text": "library(glyexp)\nlibrary(glyrepr)\n\nexp &lt;- real_experiment2\nkeep_glycans &lt;- as_glycan_composition(c(\"H5N2\", \"H6N2\", \"H7N2\", \"H8N2\", \"H9N2\"))\n\nsubset_exp &lt;- exp |&gt;\n  filter_row(glycan_composition %in% keep_glycans) |&gt;\n  filter_col(group %in% c(\"H\", \"C\"), .drop_levels = TRUE)\n\ndim(exp)  # 66 glycans and 144 samples\ndim(subset_exp)  # 5 glycans and 73 samples\ntable(SummarizedExperiment::colData(subset_exp)$group, useNA = \"ifany\")\n\n\n# Pseudocode: how row metadata and assays stay aligned.\nnew_row_data &lt;- dplyr::filter(\n  row_metadata_as_tibble,\n  glycan_composition %in% keep_glycans\n)\nnew_exp &lt;- exp[new_row_data$.variable, ]",
     "crumbs": [
-      "Reference",
+      "How to",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>How to</span>"
     ]
   },
@@ -278,7 +278,7 @@
     "section": "3.2 Inspect preprocessing history",
     "text": "3.2 Inspect preprocessing history\nSee which preprocessing steps glyclean::auto_clean() ran.\nlibrary(glyexp)\nlibrary(glyclean)\n\nexp &lt;- real_experiment2\nclean_exp &lt;- suppressMessages(auto_clean(exp))\nhistory &lt;- get_pipeline(clean_exp)\nhistory\nRun auto_clean() without suppressMessages() to see progress in the console. Use get_pipeline() to retrieve the recorded operations and their settings from the cleaned experiment.\nTo check that the recorded steps reproduce the assay in this example, replay them on the original experiment:\nclean_exp2 &lt;- suppressMessages(apply_pipeline(exp, history))\nisTRUE(all.equal(\n  SummarizedExperiment::assay(clean_exp),\n  SummarizedExperiment::assay(clean_exp2)\n))\nThis comparison returns TRUE in the example.",
     "crumbs": [
-      "Reference",
+      "How to",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>How to</span>"
     ]
   },
@@ -289,7 +289,7 @@
     "section": "3.3 Infer a candidate structure from a glycan composition",
     "text": "3.3 Infer a candidate structure from a glycan composition\nFind plausible structures for one or more glycan compositions.\nUse glyanno to match your compositions against known structures in glydb.\nlibrary(glyanno)\n\ncomp_to_struc(\n  c(\"H5N2\", \"H5N4\", \"H1N1\"),\n  species = \"Homo sapiens\",\n  glycan_type = \"N\",\n  structure_level = \"topological\",\n  return_best = TRUE\n)\nThe first argument accepts composition strings such as \"H5N2\", \"Hex(5)HexNAc(2)\", and \"Man(5)GlcNAc(2)\", or a glyrepr::glycan_composition() vector.\nspecies and glycan_type limit the database search. This example uses human N-glycans. Run glydb::glydb_species() to see available species. The database documentation lists the supported glycan types; \"O\" includes all O-linked subtypes.\nWith structure_level = \"topological\", the results retain residue connectivity and branching without specifying linkage positions or anomers. Use \"intact\" to search fully specified structures. Although glyrepr also recognizes \"partial\" structures, this search accepts only \"intact\" or \"topological\". See ?glyrepr::get_structure_level for details.\nWith return_best = TRUE, the result is a glycan-structure vector with one entry per input: the highest-confidence database match, or NA when no match is found. In this example, H1N1 returns NA. A database match is a candidate to investigate, not an experimental structure assignment.\nOmit return_best to get all matching candidates and their confidence scores as a tibble:\ncomp_to_struc(\n  c(\"H5N2\", \"H5N4\", \"H1N1\"),\n  species = \"Homo sapiens\",\n  glycan_type = \"N\",\n  structure_level = \"topological\"\n)\nSee ?glydb::glydb_structures for the definition of the confidence score.",
     "crumbs": [
-      "Reference",
+      "How to",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>How to</span>"
     ]
   },
@@ -300,7 +300,6 @@
     "section": "",
     "text": "glydraw 0.8.0\nYou can now give glycan cartoons a hand-drawn look with draw_cartoon_sketch(). Set a seed when you want the sketch strokes to be reproducible.\nlibrary(glydraw)\n\nglycan &lt;- \"Gal(b1-3)GalNAc(a1-\"\ndraw_cartoon_sketch(glycan, seed = 1)\nCartoon appearance is configured through reusable style objects. Tune options such as node_size, edge_linewidth, font_family, colors, and red_end with style_glydraw(), or use the style_glygen(), style_snfg(), and style_glycoworkbench() presets. The same styles work with draw_cartoon(), draw_cartoon_sketch(), geom_glycan(), glycan scales and guides, heatmap annotations, and export_cartoons().\nstyle &lt;- style_glydraw(\n  node_size = 1.2,\n  edge_linewidth = 1,\n  font_family = \"serif\",\n  red_end = \"~\"\n)\n\ndraw_cartoon(glycan, style = style)",
     "crumbs": [
-      "Reference",
       "Blog"
     ]
   },
@@ -311,7 +310,6 @@
     "section": "glyenzy 0.8.0",
     "text": "glyenzy 0.8.0\nYou can now plot biosynthesis networks by simply calling plot or ggplot2::autoplot() now.\n\nlibrary(glyenzy)\n\nWarning: package 'glyenzy' was built under R version 4.6.2\n\nglycans &lt;- c(\n  \"Neu5Ac(a2-3)Gal(b1-3)GalNAc(a1-\",\n  \"Neu5Ac(a2-3)Gal(b1-3)[Neu5Ac(a2-6)]GalNAc(a1-\",\n  \"Gal(b1-3)[Gal(b1-4)GlcNAc(b1-6)]GalNAc(a1-\"\n)\npath &lt;- trace_biosynthesis(glycans)\nplot(path)",
     "crumbs": [
-      "Reference",
       "Blog"
     ]
   }

@@ -20,10 +20,10 @@ book:
         - case-studies/index.qmd
         - tutorials/glycomics.Rmd
         - tutorials/glycoproteomics.Rmd
-    - part: "Reference"
+    - part: "How to"
       chapters:
         - how-to/index.qmd
-        - blog.qmd
+    - blog.qmd
 
 format:
   html:
