@@ -15,14 +15,11 @@ book:
     collapse-level: 2
   chapters:
     - index.qmd
-    - part: "Case studies"
+    - part: case-studies/index.qmd
       chapters:
-        - case-studies/index.qmd
         - tutorials/glycomics.Rmd
         - tutorials/glycoproteomics.Rmd
-    - part: "How to"
-      chapters:
-        - how-to/index.qmd
+    - how-to/index.qmd
     - blog.qmd
 
 format:

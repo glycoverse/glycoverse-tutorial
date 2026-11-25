@@ -1,6 +1,4 @@
----
-title: "How to"
----
+# How to {.unnumbered}
 
 Each recipe solves one task. For a complete workflow and installation
 instructions, see the [case studies](../case-studies/index.qmd).
