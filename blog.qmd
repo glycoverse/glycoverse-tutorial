@@ -1,8 +1,6 @@
----
-title: "Blog"
----
+# Blog {.unnumbered}
 
-# [glydraw 0.8.0](https://github.com/glycoverse/glydraw/releases/tag/v0.8.0)
+## [glydraw 0.8.0](https://github.com/glycoverse/glydraw/releases/tag/v0.8.0)
 
 You can now give glycan cartoons a hand-drawn look with
 `draw_cartoon_sketch()`. Set a seed when you want the sketch strokes to be
@@ -33,7 +31,7 @@ style <- style_glydraw(
 draw_cartoon(glycan, style = style)
 ```
 
-# [glyenzy 0.8.0](https://github.com/glycoverse/glyenzy/releases/tag/v0.8.0)
+## [glyenzy 0.8.0](https://github.com/glycoverse/glyenzy/releases/tag/v0.8.0)
 
 You can now plot biosynthesis networks by simply calling `plot` or `ggplot2::autoplot()` now.
 

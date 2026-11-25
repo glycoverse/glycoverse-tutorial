@@ -1,7 +1,8 @@
 ---
-title: "Case Studies"
 toc: false
 ---
+
+# Case Studies {.unnumbered}
 
 Follow a complete analysis from data import through interpretation. For a
 shorter example focused on one task, see [How to](../how-to/index.qmd).

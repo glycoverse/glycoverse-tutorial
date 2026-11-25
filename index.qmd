@@ -1,19 +1,33 @@
----
-title: "Glycoverse Tutorials"
----
+# Welcome {.unnumbered}
 
-Learn to analyze glycomics and glycoproteomics data with packages from the
-[Glycoverse](https://github.com/glycoverse) ecosystem. Follow a complete case
-study or look up a specific task.
+Learn to analyze glycomics and glycoproteomics data with the
+[Glycoverse](https://github.com/glycoverse) ecosystem. This book brings together
+complete analyses and short, practical recipes with R code you can adapt to
+your own experiments.
 
-## Case Studies
+## How to read this book {.unnumbered}
 
-Follow an end-to-end [glycomics or glycoproteomics case study](case-studies/index.qmd).
+Start with a case study for your data type. Each walks through data import,
+preprocessing, statistical analysis, and the interpretation of glycan structures.
+Installation instructions and example data are included in the tutorials.
 
-## How to
+- **[Glycomics](tutorials/glycomics.Rmd):** analyze glycan abundance data,
+  assign candidate structures, and explore motifs and derived traits.
+- **[Glycoproteomics](tutorials/glycoproteomics.Rmd):** work through a complete
+  glycopeptide analysis, from quantitative data to functional interpretation.
+- **[How to](how-to/index.qmd):** look up a specific operation, such as
+  subsetting an experiment, inspecting preprocessing history, or finding
+  candidate glycan structures.
+- **[Blog](blog.qmd):** explore package updates and examples of new features.
 
-Short, task-focused recipes with copyable R code.
+Use the chapter list on the left to move through the book and the table of
+contents on the right to navigate within a chapter. Search finds topics and
+functions across the entire book; the links at the bottom of each page take
+you to the previous or next chapter.
 
-- [Subset an experiment](how-to/index.qmd#subset-an-experiment)
-- [Inspect preprocessing history](how-to/index.qmd#inspect-preprocessing-history)
-- [Infer a candidate structure from a glycan composition](how-to/index.qmd#infer-a-candidate-structure-from-a-glycan-composition)
+## Before you start {.unnumbered}
+
+The examples assume familiarity with R and tidyverse data analysis. If these
+are new to you, [R for Data Science](https://r4ds.hadley.nz/) is a useful
+companion. Follow the setup instructions in your chosen case study before
+running its code, and run the chunks in order so earlier objects are available.

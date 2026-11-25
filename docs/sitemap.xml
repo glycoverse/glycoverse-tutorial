@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://glycoverse.github.io/glycoverse-tutorial/blog.html</loc>
-    <lastmod>2026-08-02T14:33:12.411Z</lastmod>
-  </url>
-  <url>
-    <loc>https://glycoverse.github.io/glycoverse-tutorial/tutorials/glycoproteomics.html</loc>
-    <lastmod>2026-11-15T04:36:31.283Z</lastmod>
-  </url>
-  <url>
     <loc>https://glycoverse.github.io/glycoverse-tutorial/index.html</loc>
-    <lastmod>2026-07-11T17:08:16.230Z</lastmod>
+    <lastmod>2026-11-25T09:51:46.022Z</lastmod>
+  </url>
+  <url>
+    <loc>https://glycoverse.github.io/glycoverse-tutorial/case-studies/index.html</loc>
+    <lastmod>2026-11-25T09:51:46.022Z</lastmod>
   </url>
   <url>
     <loc>https://glycoverse.github.io/glycoverse-tutorial/tutorials/glycomics.html</loc>
     <lastmod>2026-11-15T04:55:08.698Z</lastmod>
   </url>
   <url>
-    <loc>https://glycoverse.github.io/glycoverse-tutorial/how-to/index.html</loc>
-    <lastmod>2026-11-25T05:52:08.913Z</lastmod>
+    <loc>https://glycoverse.github.io/glycoverse-tutorial/tutorials/glycoproteomics.html</loc>
+    <lastmod>2026-11-15T04:36:31.283Z</lastmod>
   </url>
   <url>
-    <loc>https://glycoverse.github.io/glycoverse-tutorial/case-studies/index.html</loc>
-    <lastmod>2026-11-25T08:05:10.602Z</lastmod>
+    <loc>https://glycoverse.github.io/glycoverse-tutorial/how-to/index.html</loc>
+    <lastmod>2026-11-25T08:07:38.881Z</lastmod>
+  </url>
+  <url>
+    <loc>https://glycoverse.github.io/glycoverse-tutorial/blog.html</loc>
+    <lastmod>2026-11-25T09:51:46.022Z</lastmod>
   </url>
 </urlset>

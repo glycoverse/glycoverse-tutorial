@@ -1,32 +1,41 @@
 project:
-  type: website
+  type: book
   output-dir: docs
 
-website:
+book:
   title: "Glycoverse Tutorials"
+  subtitle: "A practical guide to glycomics and glycoproteomics"
   site-url: https://glycoverse.github.io/glycoverse-tutorial/
   repo-url: https://github.com/glycoverse/glycoverse-tutorial
   repo-actions: [edit, issue]
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - href: case-studies/index.qmd
-        text: Case Studies
-      - href: how-to/index.qmd
-        text: How to
-      - href: blog.qmd
-        text: Blog
-    right:
-      - icon: github
-        href: https://github.com/glycoverse/glycoverse-tutorial
+  search: true
+  page-navigation: true
+  sidebar:
+    style: docked
+    collapse-level: 2
+  chapters:
+    - index.qmd
+    - part: "Case studies"
+      chapters:
+        - case-studies/index.qmd
+        - tutorials/glycomics.Rmd
+        - tutorials/glycoproteomics.Rmd
+    - part: "Reference"
+      chapters:
+        - how-to/index.qmd
+        - blog.qmd
 
 format:
   html:
-    theme: cosmo
+    theme:
+      - cosmo
+      - styles.scss
     toc: true
+    toc-depth: 3
+    number-sections: true
     code-copy: true
     code-overflow: wrap
+    link-external-newwindow: true
 
 execute:
   freeze: auto

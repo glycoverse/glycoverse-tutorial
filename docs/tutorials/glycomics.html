@@ -8,7 +8,7 @@
 
 <meta name="description" content="An end-to-end glycomics analysis with Glycoverse.">
 
-<title>Case Study: Glycomics – Glycoverse Tutorials</title>
+<title>1&nbsp; Case Study: Glycomics – Glycoverse Tutorials</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,6 +66,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../tutorials/glycoproteomics.html" rel="next">
+<link href="../case-studies/index.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -76,13 +78,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-b3b235ae6ba71d6e5c2a90c00144237d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-68a4ba8274cf32ebf416ef062241ecf4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
+  "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
+  "panel-placement": "start",
+  "type": "textbox",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -108,87 +110,131 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-sidebar docked quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Glycoverse Tutorials</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
-<span class="menu-text">Home</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../case-studies/index.html">
-<span class="menu-text">Case Studies</span></a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="../how-to/index.html">
-<span class="menu-text">How to</span></a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="../blog.html"> 
-<span class="menu-text">Blog</span></a>
-  </li>  
-</ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/glycoverse/glycoverse-tutorial"> <i class="bi bi-github" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-</ul>
-          </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
-</div>
-      </div> <!-- /container-fluid -->
-    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../case-studies/index.html">Case studies</a></li><li class="breadcrumb-item"><a href="../tutorials/glycomics.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Case Study: Glycomics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Glycoverse Tutorials</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/glycoverse/glycoverse-tutorial" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Case studies</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../case-studies/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Case Studies</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/glycomics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Case Study: Glycomics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/glycoproteomics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Case Study: Glycoproteomics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Reference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../how-to/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">How to</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../blog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Blog</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#tldr" id="toc-tldr" class="nav-link active" data-scroll-target="#tldr">TL;DR</a></li>
-  <li><a href="#loading-the-packages" id="toc-loading-the-packages" class="nav-link" data-scroll-target="#loading-the-packages">Loading the Packages</a></li>
-  <li><a href="#reading-the-data" id="toc-reading-the-data" class="nav-link" data-scroll-target="#reading-the-data">Reading the Data</a></li>
-  <li><a href="#glycan-structure-annotation" id="toc-glycan-structure-annotation" class="nav-link" data-scroll-target="#glycan-structure-annotation">Glycan Structure Annotation</a></li>
-  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing">Data Preprocessing</a></li>
-  <li><a href="#statistical-analysis-and-visualization" id="toc-statistical-analysis-and-visualization" class="nav-link" data-scroll-target="#statistical-analysis-and-visualization">Statistical Analysis and Visualization</a></li>
-  <li><a href="#advanced-motif-analysis" id="toc-advanced-motif-analysis" class="nav-link" data-scroll-target="#advanced-motif-analysis">Advanced Motif Analysis</a></li>
-  <li><a href="#derived-trait-analysis" id="toc-derived-trait-analysis" class="nav-link" data-scroll-target="#derived-trait-analysis">Derived Trait Analysis</a></li>
-  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s Next?</a></li>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link active" data-scroll-target="#tldr"><span class="header-section-number">1.1</span> TL;DR</a></li>
+  <li><a href="#loading-the-packages" id="toc-loading-the-packages" class="nav-link" data-scroll-target="#loading-the-packages"><span class="header-section-number">1.2</span> Loading the Packages</a></li>
+  <li><a href="#reading-the-data" id="toc-reading-the-data" class="nav-link" data-scroll-target="#reading-the-data"><span class="header-section-number">1.3</span> Reading the Data</a></li>
+  <li><a href="#glycan-structure-annotation" id="toc-glycan-structure-annotation" class="nav-link" data-scroll-target="#glycan-structure-annotation"><span class="header-section-number">1.4</span> Glycan Structure Annotation</a></li>
+  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing"><span class="header-section-number">1.5</span> Data Preprocessing</a></li>
+  <li><a href="#statistical-analysis-and-visualization" id="toc-statistical-analysis-and-visualization" class="nav-link" data-scroll-target="#statistical-analysis-and-visualization"><span class="header-section-number">1.6</span> Statistical Analysis and Visualization</a></li>
+  <li><a href="#advanced-motif-analysis" id="toc-advanced-motif-analysis" class="nav-link" data-scroll-target="#advanced-motif-analysis"><span class="header-section-number">1.7</span> Advanced Motif Analysis</a></li>
+  <li><a href="#derived-trait-analysis" id="toc-derived-trait-analysis" class="nav-link" data-scroll-target="#derived-trait-analysis"><span class="header-section-number">1.8</span> Derived Trait Analysis</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">1.9</span> What’s Next?</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/glycoverse/glycoverse-tutorial/edit/main/tutorials/glycomics.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/glycoverse/glycoverse-tutorial/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../case-studies/index.html">Case studies</a></li><li class="breadcrumb-item"><a href="../tutorials/glycomics.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Case Study: Glycomics</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Case Study: Glycomics</h1>
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Case Study: Glycomics</span></h1>
 </div>
 
-<div>
-  <div class="description">
-    An end-to-end glycomics analysis with Glycoverse.
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
@@ -205,8 +251,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This vignette walks you through a complete glycomics analysis using <code>glycoverse</code>. We’ll explore the full spectrum of glycomics data analysis, from data loading and preprocessing to statistical analysis and visualization. We’ll also dive into advanced glycan structure analysis, including motif quantification and derived trait analysis. Ready to dive in? Let’s go!</p>
 <p><strong>Heads up:</strong> <code>glycoverse</code> is built on <code>tidy</code> principles throughout. If you’re new to <code>tidyverse</code> data analysis, we highly recommend checking out Hadley Wickham’s excellent <a href="https://r4ds.hadley.nz">R for Data Science</a>. Trust us, it’s worth the investment!</p>
-<section id="tldr" class="level2">
-<h2 class="anchored" data-anchor-id="tldr">TL;DR</h2>
+<section id="tldr" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="tldr"><span class="header-section-number">1.1</span> TL;DR</h2>
 <p>If you’re in a hurry…</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -259,8 +305,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>trait_anova_res <span class="ot">&lt;-</span> <span class="fu">gly_anova</span>(trait_exp)</span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="fu">get_tidy_result</span>(trait_anova_res, <span class="st">"main_test"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="loading-the-packages" class="level2">
-<h2 class="anchored" data-anchor-id="loading-the-packages">Loading the Packages</h2>
+<section id="loading-the-packages" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="loading-the-packages"><span class="header-section-number">1.2</span> Loading the Packages</h2>
 <p>We first load the <code>tidyverse</code> package, as usual.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -305,8 +351,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="reading-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="reading-the-data">Reading the Data</h2>
+<section id="reading-the-data" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="reading-the-data"><span class="header-section-number">1.3</span> Reading the Data</h2>
 <p>We’ll use the serum N-glycomics data from the liver disease study by <a href="https://doi.org/10.1038/s41467-026-68579-x">Fu et al., <em>Nature Communications</em> 17, 1885 (2026)</a>. The raw data are available under GlycoPOST accession GPST000584. The GlyHunter export used here contains one row per glycan composition and one column per MALDI plate position. The sample sheet links each position to a sample ID and a liver condition. Download <a href="https://github.com/glycoverse/glycoverse-tutorial/raw/refs/heads/main/tutorials/data/glyhunter.csv?download=1">glyhunter.csv</a> and <a href="https://github.com/glycoverse/glycoverse-tutorial/raw/refs/heads/main/tutorials/data/sample-info.csv?download=1">sample-info.csv</a> to your computer. You can put them wherever you like; in this example, they are in a <code>data</code> folder relative to your R working directory.</p>
 <p>For example, the column <code>A1-12_0_A1_1</code> corresponds to position <code>A1</code>. Use the position as the import key so glyread can align the sample sheet with the assay columns, then label the columns with the study sample IDs.</p>
 <div class="cell">
@@ -376,8 +422,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <code>.sample</code> column is a special virtual index: it represents the column names of the experiment and its assays, as well as the row names of <code>colData</code>. Changing it keeps these names synchronized.</p>
 <p>For a deeper dive into Glycoverse data containers, dplyr-style manipulation, and virtual index columns, check out <a href="https://glycoverse.github.io/glyexp/articles/glyexp.html">Get Started with glyexp</a>.</p>
 </section>
-<section id="glycan-structure-annotation" class="level2">
-<h2 class="anchored" data-anchor-id="glycan-structure-annotation">Glycan Structure Annotation</h2>
+<section id="glycan-structure-annotation" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="glycan-structure-annotation"><span class="header-section-number">1.4</span> Glycan Structure Annotation</h2>
 <p>This dataset only contains glycan composition information. However, for the advanced glycan structure analysis below, structural information is needed. A workaround is to assign these compositions with the most possible glycan structures. The <code>glyanno</code> package can help.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>raw_exp <span class="ot">&lt;-</span> raw_exp <span class="sc">|&gt;</span></span>
@@ -409,8 +455,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>glyanno::comp_to_struc()</code> returns all possible matches by default. Here we set <code>return_best</code> to TRUE to get only the best match. This returns a <code>glyrepr::glycan_structure()</code> vector with the same length as the input <code>glyrepr::glycan_composition()</code> vector, with <code>NA</code> for those unmatched compositions.</p>
 <p><strong>Note:</strong> If you run the code yourself and this is your first time using <code>glyanno</code>, call <code>glyanno::build_glyanno_cache()</code> first to build the cache. This makes the annotation process much faster.</p>
 </section>
-<section id="data-preprocessing" class="level2">
-<h2 class="anchored" data-anchor-id="data-preprocessing">Data Preprocessing</h2>
+<section id="data-preprocessing" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="data-preprocessing"><span class="header-section-number">1.5</span> Data Preprocessing</h2>
 <p>Raw quantification data needs preprocessing before analysis—that’s just a fact of life in omics. Typical steps include normalization, missing value imputation, and batch effect correction. Rather than making you implement these tedious steps manually, <code>glyclean</code> provides a comprehensive preprocessing pipeline. Just call <code>auto_clean()</code> on your <code>GlycomicSE</code> object and you’re good to go.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>clean_exp <span class="ot">&lt;-</span> <span class="fu">auto_clean</span>(raw_exp)</span>
@@ -445,8 +491,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Your data is now analysis-ready!</p>
 <p>Want to customize the preprocessing steps? See <a href="https://glycoverse.github.io/glyclean/articles/glyclean.html">Get Started with glyclean</a> for the full toolkit.</p>
 </section>
-<section id="statistical-analysis-and-visualization" class="level2">
-<h2 class="anchored" data-anchor-id="statistical-analysis-and-visualization">Statistical Analysis and Visualization</h2>
+<section id="statistical-analysis-and-visualization" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="statistical-analysis-and-visualization"><span class="header-section-number">1.6</span> Statistical Analysis and Visualization</h2>
 <p>Time for the fun part—statistical analysis and visualization! We’ll use <code>glystats</code> for the number crunching and <code>glyvis</code> to make sense of the results visually.</p>
 <p>Let’s kick off with PCA to get a bird’s-eye view of our data structure.</p>
 <div class="cell">
@@ -561,8 +607,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>For the full statistical arsenal, check out <a href="https://glycoverse.github.io/glystats/articles/glystats.html">Get Started with glystats</a> and <a href="https://glycoverse.github.io/glyvis/articles/glyvis.html">Get Started with glyvis</a>.</p>
 </section>
-<section id="advanced-motif-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="advanced-motif-analysis">Advanced Motif Analysis</h2>
+<section id="advanced-motif-analysis" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="advanced-motif-analysis"><span class="header-section-number">1.7</span> Advanced Motif Analysis</h2>
 <p>Up to now, we’ve covered standard glycomics workflows. While <code>glycoverse</code> certainly streamlines these analyses, it truly shines when it comes to advanced glycan structure analysis.</p>
 <p>Before diving into motifs, let’s get acquainted with <code>glyrepr::glycan_structure()</code> vectors.</p>
 <div class="cell">
@@ -637,8 +683,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><code>glymotif</code> has much more to offer beyond these examples. Dive deeper with <a href="https://glycoverse.github.io/glymotif/articles/glymotif.html">Get Started with glymotif</a>.</p>
 </section>
-<section id="derived-trait-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="derived-trait-analysis">Derived Trait Analysis</h2>
+<section id="derived-trait-analysis" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="derived-trait-analysis"><span class="header-section-number">1.8</span> Derived Trait Analysis</h2>
 <p>Let’s wrap up with derived traits—a clever analytical approach developed by the N-glycomics community for glycome characterization. Classic examples include:</p>
 <ul>
 <li>High-mannose glycan proportion</li>
@@ -724,8 +770,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Once again, it’s just that straightforward.</p>
 <p>This just scratches the surface of <code>glydet</code>’s capabilities. The real power lies in defining custom traits tailored to your research questions. Explore the possibilities in <a href="https://glycoverse.github.io/glydet/articles/glydet.html">Get Started with glydet</a>.</p>
 </section>
-<section id="whats-next" class="level2">
-<h2 class="anchored" data-anchor-id="whats-next">What’s Next?</h2>
+<section id="whats-next" class="level2" data-number="1.9">
+<h2 data-number="1.9" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">1.9</span> What’s Next?</h2>
 <p>This vignette has given you a taste of <code>glycoverse</code> in action through a real-world glycomics workflow. But we’ve barely scratched the surface! Now that you’ve got the basics down, you’re ready to unlock the full potential of each package.</p>
 <p>Here’s your roadmap to mastering each component:</p>
 <ul>
@@ -838,6 +884,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
         }
       }
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
@@ -1151,6 +1202,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../case-studies/index.html" class="pagination-link" aria-label="Case Studies">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Case Studies</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../tutorials/glycoproteomics.html" class="pagination-link" aria-label="Case Study: Glycoproteomics">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Case Study: Glycoproteomics</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
