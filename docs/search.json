@@ -14,7 +14,7 @@
     "href": "index.html#how-to-read-this-book",
     "title": "Glycoverse Tutorials",
     "section": "How to read this book",
-    "text": "How to read this book\nStart with a case study for your data type. Each walks through data import, preprocessing, statistical analysis, and the interpretation of glycan structures. Installation instructions and example data are included in the tutorials.\n\nGlycomics: analyze glycan abundance data, assign candidate structures, and explore motifs and derived traits.\nGlycoproteomics: work through a complete glycopeptide analysis, from quantitative data to functional interpretation.\nHow to: look up a specific operation, such as subsetting an experiment, inspecting preprocessing history, or finding candidate glycan structures.\nBlog: explore package updates and examples of new features.\n\nUse the chapter list on the left to move through the book and the table of contents on the right to navigate within a chapter. Search finds topics and functions across the entire book; the links at the bottom of each page take you to the previous or next chapter.",
+    "text": "How to read this book\nStart with a case study for your data type. Each walks through data import, preprocessing, statistical analysis, and the interpretation of glycan structures. Then browse the catalog of “How to” to find the code recipe for specific tasks.\n\nCase Studies:\n\nGlycomics: analyze glycan abundance data, assign candidate structures, and explore motifs and derived traits.\nGlycoproteomics: work through a complete glycopeptide analysis, from quantitative data to functional interpretation.\n\nHow to: look up a specific operation, such as subsetting an experiment, inspecting preprocessing history, or finding candidate glycan structures.",
     "crumbs": [
       "Welcome"
     ]
@@ -24,7 +24,7 @@
     "href": "index.html#before-you-start",
     "title": "Glycoverse Tutorials",
     "section": "Before you start",
-    "text": "Before you start\nThe examples assume familiarity with R and tidyverse data analysis. If these are new to you, R for Data Science is a useful companion. Follow the setup instructions in your chosen case study before running its code, and run the chunks in order so earlier objects are available.",
+    "text": "Before you start\nThe examples assume familiarity with R and tidyverse data analysis. If these are new to you, R for Data Science is a useful companion. Being familiar with SummarizedExperiment is also helpful.",
     "crumbs": [
       "Welcome"
     ]
