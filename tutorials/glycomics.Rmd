@@ -33,16 +33,14 @@ library(glycoverse)
 library(SummarizedExperiment)
 
 # Read the data and assign candidate structures
-sample_info <- read_csv("data/sample-info.csv", show_col_types = FALSE) |>
-  transmute(study_id = sample, sample = maldi_pos, group)
+sample_info <- read_csv("data/sample-info.csv", show_col_types = FALSE)
 
 raw_exp <- read_glyhunter(
   "data/glyhunter.csv",
-  sample_info = sample_info,
-  sample_name_converter = function(x) str_split_i(x, "_", 3)
+  sample_info = sample_info
 ) |>
   filter_col(group != "QC") |>
-  mutate_col(.sample = study_id, group = factor(group, levels = c("H", "M", "Y", "C"))) |>
+  mutate_col(group = factor(group, levels = c("H", "M", "Y", "C"))) |>
   mutate_row(
     glycan_structure = glyanno::comp_to_struc(
       glycan_composition, species = "Homo sapiens", glycan_type = "N",
@@ -99,29 +97,24 @@ library(glycoverse)
 We'll use the serum N-glycomics data from the liver disease study by
 [Fu et al., *Nature Communications* 17, 1885 (2026)](https://doi.org/10.1038/s41467-026-68579-x).
 The raw data are available under GlycoPOST accession GPST000584.
-The GlyHunter export used here contains one row per
-glycan composition and one column per MALDI plate position. The sample sheet
-links each position to a sample ID and a liver condition.
+The `glyhunter.csv` file contains one row per glycan composition and one
+column per sample, named with its sample ID (for example, `S2001`).
+The `sample-info.csv` file contains two columns: `sample`, matching the sample
+names in `glyhunter.csv`, and `group`, giving the liver condition or QC label.
 Download [glyhunter.csv](https://github.com/glycoverse/glycoverse-tutorial/raw/refs/heads/main/tutorials/data/glyhunter.csv?download=1)
 and [sample-info.csv](https://github.com/glycoverse/glycoverse-tutorial/raw/refs/heads/main/tutorials/data/sample-info.csv?download=1)
 to your computer. You can put them wherever you like; in this example, they
 are in a `data` folder relative to your R working directory.
 
-For example, the column `A1-12_0_A1_1` corresponds to position `A1`.
-Use the position as the import key so glyread can align the sample sheet
-with the assay columns, then label the columns with the study sample IDs.
-
 ```{r import}
-sample_info <- read_csv("data/sample-info.csv", show_col_types = FALSE) |>
-  transmute(study_id = sample, sample = maldi_pos, group)
+sample_info <- read_csv("data/sample-info.csv", show_col_types = FALSE)
 
 raw_exp <- read_glyhunter(
   "data/glyhunter.csv",
-  sample_info = sample_info,
-  sample_name_converter = function(x) str_split_i(x, "_", 3)
+  sample_info = sample_info
 ) |>
   filter_col(group != "QC") |>
-  mutate_col(.sample = study_id, group = factor(group, levels = c("H", "M", "Y", "C")))
+  mutate_col(group = factor(group, levels = c("H", "M", "Y", "C")))
 ```
 
 After removing the six quality-control runs, 144 samples remain. The groups
@@ -152,14 +145,10 @@ as_tibble(rowData(raw_exp))
 Now let's come back to the sample metadata operations.
 `filter_col()` filters samples using columns in `colData`, so it removes the
 quality-control runs. `mutate_col()` works like `dplyr::mutate()` on `colData`:
-here it sets the sample names to the study IDs and turns `group` into a factor.
+here it turns `group` into a factor and sets the order of the groups.
 
-The `.sample` column is a special virtual index: it represents the column names
-of the experiment and its assays, as well as the row names of `colData`.
-Changing it keeps these names synchronized.
-
-For a deeper dive into Glycoverse data containers, dplyr-style manipulation, and
-virtual index columns, check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
+For a deeper dive into Glycoverse data containers and dplyr-style manipulation,
+check out [Get Started with glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.html).
 
 ## Glycan Structure Annotation
 
