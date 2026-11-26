@@ -20,7 +20,6 @@ book:
         - tutorials/glycomics.Rmd
         - tutorials/glycoproteomics.Rmd
     - how-to/index.qmd
-    - blog.qmd
 
 format:
   html:
