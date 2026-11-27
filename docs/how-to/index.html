@@ -223,72 +223,178 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="subset-an-experiment">Subset an experiment</h2>
 <p><strong>Keep selected glycans and sample groups in a glyexp experiment.</strong></p>
 <p>The bundled example uses <code>H</code> for healthy controls and <code>C</code> for hepatocellular carcinoma.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glyexp)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glyrepr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>exp <span class="ot">&lt;-</span> real_experiment2</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>keep_glycans <span class="ot">&lt;-</span> <span class="fu">as_glycan_composition</span>(<span class="fu">c</span>(<span class="st">"H5N2"</span>, <span class="st">"H6N2"</span>, <span class="st">"H7N2"</span>, <span class="st">"H8N2"</span>, <span class="st">"H9N2"</span>))</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>subset_exp <span class="ot">&lt;-</span> exp <span class="sc">|&gt;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter_row</span>(glycan_composition <span class="sc">%in%</span> keep_glycans) <span class="sc">|&gt;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter_col</span>(group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"H"</span>, <span class="st">"C"</span>), <span class="at">.drop_levels =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(exp)  <span class="co"># 66 glycans and 144 samples</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(subset_exp)  <span class="co"># 5 glycans and 73 samples</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(SummarizedExperiment<span class="sc">::</span><span class="fu">colData</span>(subset_exp)<span class="sc">$</span>group, <span class="at">useNA =</span> <span class="st">"ifany"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glyexp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'glyexp' was built under R version 4.6.2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glyrepr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>exp <span class="ot">&lt;-</span> real_experiment2</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>keep_glycans <span class="ot">&lt;-</span> <span class="fu">as_glycan_composition</span>(<span class="fu">c</span>(<span class="st">"H5N2"</span>, <span class="st">"H6N2"</span>, <span class="st">"H7N2"</span>, <span class="st">"H8N2"</span>, <span class="st">"H9N2"</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>subset_exp <span class="ot">&lt;-</span> exp <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter_row</span>(glycan_composition <span class="sc">%in%</span> keep_glycans) <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter_col</span>(group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"H"</span>, <span class="st">"C"</span>), <span class="at">.drop_levels =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(exp)  <span class="co"># 66 glycans and 144 samples</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  66 144</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(subset_exp)  <span class="co"># 5 glycans and 73 samples</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  5 73</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(SummarizedExperiment<span class="sc">::</span><span class="fu">colData</span>(subset_exp)<span class="sc">$</span>group, <span class="at">useNA =</span> <span class="st">"ifany"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ H  C 
+26 47 </code></pre>
+</div>
+</div>
 <p><code>filter_row()</code> and <code>filter_col()</code> accept the same kind of conditions as <code>dplyr::filter()</code>. They evaluate the conditions against feature and sample metadata, respectively, and subset the experiment so the assays stay aligned with the metadata.</p>
 <p>Conceptually, <code>filter_row()</code> identifies the rows to keep from <code>rowData(exp)</code> and then subsets the experiment by those row IDs:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pseudocode: how row metadata and assays stay aligned.</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>new_row_data <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  row_metadata_as_tibble,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  glycan_composition <span class="sc">%in%</span> keep_glycans</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>new_exp <span class="ot">&lt;-</span> exp[new_row_data<span class="sc">$</span>.variable, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pseudocode: how row metadata and assays stay aligned.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>new_row_data <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  row_metadata_as_tibble,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  glycan_composition <span class="sc">%in%</span> keep_glycans</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>new_exp <span class="ot">&lt;-</span> exp[new_row_data<span class="sc">$</span>.variable, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Here, <code>.variable</code> holds the row IDs. <code>filter_col()</code> does the same for <code>colData(exp)</code> and the assay columns. Setting <code>.drop_levels = TRUE</code> also removes unused levels from the <code>group</code> factor.</p>
 </section>
 <section id="inspect-preprocessing-history" class="level2">
 <h2 class="anchored" data-anchor-id="inspect-preprocessing-history">Inspect preprocessing history</h2>
 <p><strong>See which preprocessing steps <code>glyclean::auto_clean()</code> ran.</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glyexp)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glyclean)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>exp <span class="ot">&lt;-</span> real_experiment2</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>clean_exp <span class="ot">&lt;-</span> <span class="fu">suppressMessages</span>(<span class="fu">auto_clean</span>(exp))</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> <span class="fu">get_pipeline</span>(clean_exp)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>history</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glyexp)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glyclean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'glyclean' was built under R version 4.6.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'glyclean'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    aggregate</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>exp <span class="ot">&lt;-</span> real_experiment2</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>clean_exp <span class="ot">&lt;-</span> <span class="fu">suppressMessages</span>(<span class="fu">auto_clean</span>(exp))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> <span class="fu">get_pipeline</span>(clean_exp)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>history</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── &lt;glyclean_pipeline&gt; 5 steps ─────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1. remove_rare</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>   prop = 0.8, n = NULL, by = NULL, strict = FALSE, min_n = 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>2. remove_rare</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>   prop = 0.5, n = NULL, by = "group", strict = FALSE, min_n = 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>3. impute_miss_forest</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>   by = NULL, seed = 123</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>4. aggregate</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>   to_level = "gs", standardize_variable = TRUE, f = base::sum, seed = 123</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>5. normalize_total_area</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>   (no parameters)</code></pre>
+</div>
+</div>
 <p>Run <code>auto_clean()</code> without <code>suppressMessages()</code> to see progress in the console. Use <code>get_pipeline()</code> to retrieve the recorded operations and their settings from the cleaned experiment.</p>
 <p>To check that the recorded steps reproduce the assay in this example, replay them on the original experiment:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>clean_exp2 <span class="ot">&lt;-</span> <span class="fu">suppressMessages</span>(<span class="fu">apply_pipeline</span>(exp, history))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  SummarizedExperiment<span class="sc">::</span><span class="fu">assay</span>(clean_exp),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  SummarizedExperiment<span class="sc">::</span><span class="fu">assay</span>(clean_exp2)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>clean_exp2 <span class="ot">&lt;-</span> <span class="fu">suppressMessages</span>(<span class="fu">apply_pipeline</span>(exp, history))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  SummarizedExperiment<span class="sc">::</span><span class="fu">assay</span>(clean_exp),</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  SummarizedExperiment<span class="sc">::</span><span class="fu">assay</span>(clean_exp2)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
 <p>This comparison returns <code>TRUE</code> in the example.</p>
 </section>
 <section id="infer-a-candidate-structure-from-a-glycan-composition" class="level2">
 <h2 class="anchored" data-anchor-id="infer-a-candidate-structure-from-a-glycan-composition">Infer a candidate structure from a glycan composition</h2>
 <p><strong>Find plausible structures for one or more glycan compositions.</strong></p>
 <p>Use <a href="https://glycoverse.github.io/glyanno/#installation">glyanno</a> to match your compositions against known structures in glydb.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glyanno)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">comp_to_struc</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"H5N2"</span>, <span class="st">"H5N4"</span>, <span class="st">"H1N1"</span>),</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">species =</span> <span class="st">"Homo sapiens"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">glycan_type =</span> <span class="st">"N"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">structure_level =</span> <span class="st">"topological"</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">return_best =</span> <span class="cn">TRUE</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glyanno)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">comp_to_struc</span>(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"H5N2"</span>, <span class="st">"H5N4"</span>, <span class="st">"H1N1"</span>),</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">species =</span> <span class="st">"Homo sapiens"</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">glycan_type =</span> <span class="st">"N"</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">structure_level =</span> <span class="st">"topological"</span>,</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">return_best =</span> <span class="cn">TRUE</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;glydb_structure[3]&gt;
+[1] Man(??-?)[Man(??-?)]Man(??-?)[Man(??-?)]Man(??-?)GlcNAc(??-?)GlcNAc(??-
+[2] Gal(??-?)GlcNAc(??-?)Man(??-?)[Gal(??-?)GlcNAc(??-?)Man(??-?)]Man(??-?)GlcNAc(??-?)GlcNAc(??-
+[3] NA
+# Unique structures: 2</code></pre>
+</div>
+</div>
 <p>The first argument accepts composition strings such as <code>"H5N2"</code>, <code>"Hex(5)HexNAc(2)"</code>, and <code>"Man(5)GlcNAc(2)"</code>, or a <code>glyrepr::glycan_composition()</code> vector.</p>
 <p><code>species</code> and <code>glycan_type</code> limit the database search. This example uses human N-glycans. Run <code>glydb::glydb_species()</code> to see available species. The <a href="https://glycoverse.github.io/glydb/reference/glydb_structures.html">database documentation</a> lists the supported glycan types; <code>"O"</code> includes all O-linked subtypes.</p>
 <p>With <code>structure_level = "topological"</code>, the results retain residue connectivity and branching without specifying linkage positions or anomers. Use <code>"intact"</code> to search fully specified structures. Although glyrepr also recognizes <code>"partial"</code> structures, this search accepts only <code>"intact"</code> or <code>"topological"</code>. See <code>?glyrepr::get_structure_level</code> for details.</p>
 <p>With <code>return_best = TRUE</code>, the result is a glycan-structure vector with one entry per input: the highest-confidence database match, or <code>NA</code> when no match is found. In this example, <code>H1N1</code> returns <code>NA</code>. A database match is a candidate to investigate, not an experimental structure assignment.</p>
 <p>Omit <code>return_best</code> to get all matching candidates and their confidence scores as a tibble:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">comp_to_struc</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"H5N2"</span>, <span class="st">"H5N4"</span>, <span class="st">"H1N1"</span>),</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">species =</span> <span class="st">"Homo sapiens"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">glycan_type =</span> <span class="st">"N"</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">structure_level =</span> <span class="st">"topological"</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">comp_to_struc</span>(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"H5N2"</span>, <span class="st">"H5N4"</span>, <span class="st">"H1N1"</span>),</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">species =</span> <span class="st">"Homo sapiens"</span>,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">glycan_type =</span> <span class="st">"N"</span>,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">structure_level =</span> <span class="st">"topological"</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 3
+   composition     structure                                          confidence
+   &lt;comp&gt;          &lt;glydb_st&gt;                                              &lt;dbl&gt;
+ 1 Hex(5)HexNAc(2) Man(??-?)[Man(??-?)]Man(??-?)[Man(??-?)]Man(??-?)…      4.64 
+ 2 Hex(5)HexNAc(2) Man(??-?)Man(??-?)[Man(??-?)Man(??-?)]Man(??-?)Gl…      0.693
+ 3 Hex(5)HexNAc(2) Gal(??-?)GlcNAc(??-?)Man(??-?)[Man(??-?)Man(??-?)…      0    
+ 4 Hex(5)HexNAc(2) Man(??-?)Man(??-?)Man(??-?)[Man(??-?)]Man(??-?)Gl…      1.39 
+ 5 Hex(5)HexNAc(2) Man(??-?)[Man(??-?)]Man(??-?)[GlcNAc(??-?)Man(??-…      0    
+ 6 Hex(5)HexNAc(2) Man(??-?)[Man(??-?)]Man(??-?)[GlcNAc(??-?)Man(??-…      0    
+ 7 Hex(5)HexNAc(2) Man(??-?)Man(??-?)[Man(??-?)]Man(??-?)Man(??-?)Gl…      0    
+ 8 Hex(5)HexNAc(2) GlcNAc(??-?)Man(??-?)Man(??-?)Man(??-?)[Man(??-?)…     -1    
+ 9 Hex(5)HexNAc(2) Man(??-?)[Man(??-?)]Man(??-?)[Man(??-?)]Man(??-?)…      2.40 
+10 Hex(5)HexNAc(2) Glc(??-?)Man(??-?)Man(??-?)Man(??-?)Man(??-?)GlcN…      0    
+11 Hex(5)HexNAc(2) Man(??-?)Man(??-?)[Man(??-?)Man(??-?)]Man(??-?)Gl…      0    
+12 Hex(5)HexNAc(2) Gal(??-?)GlcNAc(??-?)Man(??-?)[Man(??-?)Man(??-?)…     -1    
+13 Hex(5)HexNAc(4) Gal(??-?)GlcNAc(??-?)Man(??-?)[Gal(??-?)GlcNAc(??…      4.71 
+14 Hex(5)HexNAc(4) Gal(??-?)GlcNAc(??-?)Man(??-?)[Gal(??-?)GlcNAc(??…      3.43 
+15 Hex(5)HexNAc(4) Gal(??-?)GlcNAc(??-?)[Gal(??-?)GlcNAc(??-?)]Man(?…      2.56 
+16 Hex(5)HexNAc(4) GalNAc(??-?)GlcNAc(??-?)Man(??-?)[Man(??-?)[Man(?…      1.39 
+17 Hex(5)HexNAc(4) Glc(??-?)GlcNAc(??-?)Man(??-?)[Glc(??-?)GlcNAc(??…     -1    
+18 Hex(5)HexNAc(4) Man(??-?)[Man(??-?)]Man(??-?)[GlcNAc(??-?)Man(??-…      2.48 
+19 Hex(5)HexNAc(4) Gal(??-?)GlcNAc(??-?)Man(??-?)[Gal(??-?)GlcNAc(??…      0.693
+20 Hex(5)HexNAc(4) GalNAc(??-?)GlcNAc(??-?)Man(??-?)[Man(??-?)[Man(?…      0    </code></pre>
+</div>
+</div>
 <p>See <code>?glydb::glydb_structures</code> for the definition of the confidence score.</p>
 
 

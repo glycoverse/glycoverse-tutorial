@@ -10,7 +10,7 @@ instructions, see the [case studies](../case-studies/index.qmd).
 The bundled example uses `H` for healthy controls and `C` for hepatocellular
 carcinoma.
 
-```r
+```{r}
 library(glyexp)
 library(glyrepr)
 
@@ -51,7 +51,7 @@ removes unused levels from the `group` factor.
 
 **See which preprocessing steps `glyclean::auto_clean()` ran.**
 
-```r
+```{r}
 library(glyexp)
 library(glyclean)
 
@@ -68,7 +68,7 @@ from the cleaned experiment.
 To check that the recorded steps reproduce the assay in this example, replay
 them on the original experiment:
 
-```r
+```{r}
 clean_exp2 <- suppressMessages(apply_pipeline(exp, history))
 isTRUE(all.equal(
   SummarizedExperiment::assay(clean_exp),
@@ -85,7 +85,7 @@ This comparison returns `TRUE` in the example.
 Use [glyanno](https://glycoverse.github.io/glyanno/#installation) to match your
 compositions against known structures in glydb.
 
-```r
+```{r}
 library(glyanno)
 
 comp_to_struc(
@@ -120,7 +120,7 @@ to investigate, not an experimental structure assignment.
 Omit `return_best` to get all matching candidates and their confidence scores
 as a tibble:
 
-```r
+```{r}
 comp_to_struc(
   c("H5N2", "H5N4", "H1N1"),
   species = "Homo sapiens",
